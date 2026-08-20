@@ -15,6 +15,7 @@ interface ButtonProps {
   className?: string;
   ariaLabel?: string;
   external?: boolean;
+  disabled?: boolean;
 }
 
 const variantClasses: Record<ButtonVariant, string> = {
@@ -45,9 +46,11 @@ export function Button({
   className,
   ariaLabel,
   external = false,
+  disabled = false,
 }: ButtonProps) {
   const classes = cn(
     "inline-flex items-center justify-center gap-2 rounded-sm font-display tracking-tight",
+    "disabled:pointer-events-none disabled:opacity-50",
     variantClasses[variant],
     sizeClasses[size],
     className,
@@ -76,7 +79,7 @@ export function Button({
   }
 
   return (
-    <button type={type} onClick={onClick} className={classes} aria-label={ariaLabel}>
+    <button type={type} onClick={onClick} className={classes} aria-label={ariaLabel} disabled={disabled}>
       {children}
     </button>
   );
