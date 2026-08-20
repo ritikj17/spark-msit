@@ -1,0 +1,106 @@
+/*
+ * SPARK design tokens
+ * Source of truth for the locked visual direction: dark-first, gold accent,
+ * premium technical / research-lab aesthetic.
+ *
+ * Tokens are declared as plain CSS custom properties (used in raw CSS and JS)
+ * and mapped into Tailwind v4 utilities through `@theme inline`.
+ */
+
+:root {
+  /* ---- Color · surfaces ---- */
+  --spark-bg: #0a0b0d;
+  --spark-bg-deep: #060708;
+  --spark-surface: #101216;
+  --spark-surface-raised: #14171c;
+
+  /* ---- Color · borders ---- */
+  --spark-line: rgba(255, 255, 255, 0.08);
+  --spark-line-strong: rgba(255, 255, 255, 0.14);
+
+  /* ---- Color · text ---- */
+  --spark-ink: #edeff2;
+  --spark-ink-secondary: #9aa0a8;
+  --spark-ink-muted: #6b7076;
+
+  /* ---- Color · accent (SPARK gold) ---- */
+  --spark-accent: #f0b13f;
+  --spark-accent-bright: #ffc25e;
+  --spark-accent-dim: #9c6f1e;
+
+  /* ---- Color · status ---- */
+  --spark-success: #4ade80;
+  --spark-error: #f87171;
+
+  /* ---- Typography ---- */
+  --spark-font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --spark-font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --spark-font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* ---- Radius ---- */
+  --spark-radius-sm: 8px;
+  --spark-radius-card: 12px;
+  --spark-radius-panel: 16px;
+
+  /* ---- Shadow / glow ---- */
+  --spark-shadow-card: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 8px 24px rgba(0, 0, 0, 0.4);
+  --spark-glow-accent: 0 0 24px rgba(240, 177, 63, 0.18);
+  --spark-glow-accent-strong: 0 0 32px rgba(240, 177, 63, 0.32);
+
+  /* ---- Motion ---- */
+  --spark-duration-fast: 150ms;
+  --spark-duration-base: 250ms;
+  --spark-duration-slow: 400ms;
+  --spark-duration-reveal: 600ms;
+  --spark-ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* ---- Z-index layers ---- */
+  --spark-z-3d: 0;
+  --spark-z-content: 10;
+  --spark-z-nav: 50;
+  --spark-z-overlay: 60;
+  --spark-z-modal: 70;
+  --spark-z-toast: 80;
+
+  /* ---- Layout ---- */
+  --spark-container-max: 80rem;
+  --spark-content-rail: 72ch;
+  --spark-section-pad: clamp(4rem, 10vw, 8rem);
+}
+
+@theme inline {
+  /* Colors */
+  --color-base: var(--spark-bg);
+  --color-base-deep: var(--spark-bg-deep);
+  --color-surface: var(--spark-surface);
+  --color-surface-raised: var(--spark-surface-raised);
+
+  --color-line: var(--spark-line);
+  --color-line-strong: var(--spark-line-strong);
+
+  --color-ink: var(--spark-ink);
+  --color-ink-secondary: var(--spark-ink-secondary);
+  --color-ink-muted: var(--spark-ink-muted);
+
+  --color-accent: var(--spark-accent);
+  --color-accent-bright: var(--spark-accent-bright);
+  --color-accent-dim: var(--spark-accent-dim);
+
+  --color-success: var(--spark-success);
+  --color-error: var(--spark-error);
+
+  /* Fonts */
+  --font-display: var(--spark-font-display);
+  --font-sans: var(--spark-font-sans);
+  --font-mono: var(--spark-font-mono);
+
+  /* Radius */
+  --radius-sm: var(--spark-radius-sm);
+  --radius-card: var(--spark-radius-card);
+  --radius-panel: var(--spark-radius-panel);
+
+  /* Shadow / glow */
+  --shadow-card: var(--spark-shadow-card);
+  --shadow-glow: var(--spark-glow-accent);
+  --shadow-glow-strong: var(--spark-glow-accent-strong);
+}
