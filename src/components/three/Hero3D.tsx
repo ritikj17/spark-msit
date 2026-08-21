@@ -8,23 +8,17 @@ interface Hero3DProps {
 }
 
 /**
- * Full-bleed 3D hero canvas wrapper. Mounted inside the Home hero section.
- * Receives node selection callbacks for UI synchronization.
+ * Full-bleed 3D hero canvas wrapper. Fills its parent; positioning is owned
+ * by the page so the same component works as an overlay or a stacked block.
  */
 export function Hero3D({ className }: Hero3DProps) {
-  const handleNodeSelect = (node: { id: string; label: string }) => {
-    // Could dispatch to a context/store for UI sync (e.g., highlight card)
-    console.log("[Hero3D] Node selected:", node);
+  const handleNodeSelect = () => {
+    // Node selection is a visual enhancement only; node meaning is fully
+    // duplicated in HTML by the What We Do section.
   };
 
   return (
-    <div
-      className={cn(
-        "absolute inset-0 w-full h-full",
-        className,
-      )}
-      aria-hidden="true"
-    >
+    <div className={cn("relative h-full w-full", className)} aria-hidden="true">
       <SparkScene onNodeSelect={handleNodeSelect} />
     </div>
   );

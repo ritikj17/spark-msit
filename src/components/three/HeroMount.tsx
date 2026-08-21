@@ -12,10 +12,7 @@ const SparkHero3D = lazy(() =>
 
 function HeroLoading() {
   return (
-    <div
-      className="relative w-full aspect-video min-h-[500px] rounded-panel border border-line bg-base"
-      aria-hidden="true"
-    >
+    <div className="h-full w-full" aria-hidden="true">
       <div className="absolute inset-0 flex items-center justify-center">
         <div className="flex flex-col items-center gap-3 text-center">
           <div className="size-12 rounded-full border-3 border-accent border-t-transparent animate-spin" />
@@ -58,15 +55,19 @@ class Hero3DErrorBoundary extends Component<
 
 /* ── Public mount point ────────────────────────────────────────────────── */
 
+interface HeroMountProps {
+  className?: string;
+}
+
 /**
  * Client-side mount for the 3D hero. Owns the error boundary and Suspense
  * boundary so the server-rendered page never imports three.js code.
  */
-export function HeroMount() {
+export function HeroMount({ className }: HeroMountProps) {
   return (
     <Hero3DErrorBoundary fallback={<HeroLoading />}>
       <Suspense fallback={<HeroLoading />}>
-        <SparkHero3D />
+        <SparkHero3D className={className} />
       </Suspense>
     </Hero3DErrorBoundary>
   );

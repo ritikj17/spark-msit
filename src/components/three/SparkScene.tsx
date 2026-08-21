@@ -78,6 +78,13 @@ function SparkCore({ reduced }: { reduced: boolean }) {
           side={THREE.BackSide}
         />
       </mesh>
+
+      {/* Core wordmark — mirrors the locked composition */}
+      <Html center position={[0, 0, 0]} style={{ pointerEvents: "none" }} zIndexRange={[5, 0]}>
+        <span className="font-display text-2xl font-semibold tracking-[0.12em] text-accent drop-shadow-[0_0_16px_rgba(240,177,63,0.45)] select-none">
+          SPARK
+        </span>
+      </Html>
     </group>
   );
 }
@@ -232,25 +239,35 @@ function SparkNode({ node, onSelect, selectedId, reduced }: SparkNodeProps) {
         />
       </mesh>
 
-      {/* Label via Html overlay */}
+      {/* Label via Html overlay — mirrors the locked hero composition */}
       <Html
         transform
-        position={[x, 1.4, z]}
+        position={[x, 1.5, z]}
         style={{
           pointerEvents: "none",
-          opacity: hovered || isSelected ? 1 : 0.7,
+          opacity: hovered || isSelected ? 1 : 0.75,
           transition: "opacity 200ms",
         }}
+        zIndexRange={[5, 0]}
       >
-        <span
+        <div
           className={cn(
-            "font-mono text-[11px] uppercase tracking-[0.2em] px-2 py-1 rounded-sm border border-line/50 bg-base/80 backdrop-blur-sm",
-            isSelected && "border-accent text-accent",
-            !isSelected && "text-ink-secondary",
+            "flex w-36 flex-col gap-1 border-l border-accent/60 pl-2",
+            isSelected && "shadow-glow",
           )}
         >
-          {node.label}
-        </span>
+          <span
+            className={cn(
+              "font-mono text-[10px] font-medium uppercase tracking-[0.18em]",
+              isSelected || hovered ? "text-accent" : "text-ink",
+            )}
+          >
+            {node.label}
+          </span>
+          <span className="text-[9px] leading-snug text-ink-secondary">
+            {node.description}
+          </span>
+        </div>
       </Html>
     </group>
   );
