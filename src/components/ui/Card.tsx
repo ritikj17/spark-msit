@@ -1,21 +1,19 @@
-import type { ElementType, ReactNode } from "react";
+import type { ComponentPropsWithoutRef } from "react";
 import { cn } from "@/lib/utils";
 
-interface CardProps {
-  children: ReactNode;
-  as?: ElementType;
+export type CardProps = ComponentPropsWithoutRef<"div"> & {
   interactive?: boolean;
   glow?: boolean;
-  className?: string;
-}
+};
 
 /**
  * Technical panel surface. Thin border, rounded corners, subtle raised
  * background — the base "panel" unit of the SPARK design system.
  */
-export function Card({ children, as: Component = "div", interactive = false, glow = false, className }: CardProps) {
+export function Card({ children, interactive = false, glow = false, className, ...rest }: CardProps) {
   return (
-    <Component
+    <div
+      {...rest}
       className={cn(
         "rounded-panel border border-line bg-surface p-6",
         glow && "shadow-glow",
@@ -24,6 +22,6 @@ export function Card({ children, as: Component = "div", interactive = false, glo
       )}
     >
       {children}
-    </Component>
+    </div>
   );
 }

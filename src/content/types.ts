@@ -113,3 +113,10 @@ export interface ContactConfig {
     mantra: string;
   };
 }
+
+export interface WhatWeDoItem {
+  id: string;
+  title: string;
+  icon: string;
+  description: string;
+}
