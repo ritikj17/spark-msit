@@ -49,12 +49,14 @@ interface SceneConfig {
 }
 
 function useSceneConfig(): SceneConfig {
-  // Layout role is derived from canvas WIDTH, not aspect: the desktop hero
-  // cell is nearly square (~920×930) while tablet/mobile render as contained
-  // blocks (≤512px wide). Width cleanly separates those two roles.
+  // Layout role derives from canvas WIDTH, not aspect: the desktop hero
+  // cell is nearly square while tablet/mobile render as contained blocks.
+  // Radial scale is continuous so orbit paths plus depth-scaled labels stay
+  // contained from small cells up to large displays (bounded 0.55–1).
   const width = useThree((state) => state.size.width);
   const compact = width < 640;
-  return { compact, s: compact ? 0.55 : 1 };
+  const s = Math.min(1, Math.max(0.55, width / 1400));
+  return { compact, s };
 }
 
 /* ── SparkCore ─────────────────────────────────────────────────────────── */
