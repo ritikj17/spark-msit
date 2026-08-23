@@ -103,4 +103,12 @@
   --shadow-card: var(--spark-shadow-card);
   --shadow-glow: var(--spark-glow-accent);
   --shadow-glow-strong: var(--spark-glow-accent-strong);
+
+  /* Z-index */
+  --z-3d: var(--spark-z-3d);
+  --z-content: var(--spark-z-content);
+  --z-nav: var(--spark-z-nav);
+  --z-overlay: var(--spark-z-overlay);
+  --z-modal: var(--spark-z-modal);
+  --z-toast: var(--spark-z-toast);
 }

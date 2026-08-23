@@ -70,12 +70,12 @@ export default function Home() {
       {/* ── HERO ── */}
       <section
         id="hero"
-        className="relative min-h-[calc(100svh-4rem)] flex items-center overflow-hidden border-b border-line"
+        className="relative min-h-[calc(100svh-4rem)] grid grid-cols-[1fr_58%] lg:grid-cols-[42%_58%] overflow-hidden border-b border-line"
       >
         <SectionIndicator number="01" />
 
-        {/* 3D visual — stacked on mobile, absolute right on desktop */}
-        <div className="relative w-full h-[420px] sm:h-[480px] lg:absolute lg:inset-y-0 lg:right-0 lg:h-auto lg:w-[58%] lg:top-0 lg:z-[0]">
+        {/* 3D visual — right column */}
+        <div className="relative h-full w-full lg:col-start-2 lg:row-start-1 z-3d">
           <HeroMount className="h-full w-full" />
           {/* Fade left edge on desktop */}
           <div aria-hidden className="pointer-events-none absolute inset-0 hidden lg:block bg-gradient-to-r from-base via-base/10 to-transparent" />
@@ -83,56 +83,42 @@ export default function Home() {
           <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-base to-transparent lg:hidden" />
         </div>
 
-        {/* Content */}
-        <Container className="relative z-content pt-12 pb-16 lg:pt-20 lg:pb-24">
+        {/* Content — left column */}
+        <Container className="relative z-content pt-12 pb-16 lg:pt-20 lg:pb-24 lg:col-start-1 lg:row-start-1 self-center">
           <div className="max-w-2xl flex flex-col gap-6">
-            <ScrollReveal delay={0}>
-              <p className="font-mono text-xs uppercase tracking-[0.25em] text-accent">
-                STUDENT PLATFORM FOR ADVANCEMENT, RESEARCH & KNOWLEDGE
-              </p>
-            </ScrollReveal>
+            <p className="font-mono text-xs uppercase tracking-[0.25em] text-accent">
+              STUDENT PLATFORM FOR ADVANCEMENT, RESEARCH & KNOWLEDGE
+            </p>
 
-            <ScrollReveal delay={0.1}>
-              <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-semibold tracking-tight text-ink leading-[1.05]">
-                {site.name} <span className="text-accent">⚡</span>
-              </h1>
-            </ScrollReveal>
+            <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-semibold tracking-tight text-ink leading-[1.05]">
+              {site.name} <span className="text-accent">⚡</span>
+            </h1>
 
-            <ScrollReveal delay={0.2}>
-              <p className="font-display text-lg sm:text-xl lg:text-2xl text-ink leading-relaxed">
-                Where Curiosity Meets <span className="text-accent">Creation.</span>
-              </p>
-            </ScrollReveal>
+            <p className="font-display text-lg sm:text-xl lg:text-2xl text-ink leading-relaxed">
+              Where Curiosity Meets <span className="text-accent">Creation.</span>
+            </p>
 
-            <ScrollReveal delay={0.3}>
-              <p className="text-base sm:text-lg max-w-xl leading-relaxed text-ink-secondary">
-                Have an idea you want to work on? Interested in research? Want to build
-                something new or learn something beyond your classroom?
-              </p>
-            </ScrollReveal>
+            <p className="text-base sm:text-lg max-w-xl leading-relaxed text-ink-secondary">
+              Have an idea you want to work on? Interested in research? Want to build
+              something new or learn something beyond your classroom?
+            </p>
 
-            <ScrollReveal delay={0.35}>
-              <p className="text-base max-w-xl leading-relaxed text-ink-secondary">
-                SPARK is a place to start.
-              </p>
-            </ScrollReveal>
+            <p className="text-base max-w-xl leading-relaxed text-ink-secondary">
+              SPARK is a place to start.
+            </p>
 
-            <ScrollReveal delay={0.4}>
-              <div className="flex flex-col sm:flex-row gap-3">
-                <Button href="/about" variant="primary" size="lg" className="w-full sm:w-auto">
-                  Explore SPARK
-                  <span aria-hidden>→</span>
-                </Button>
-                <Button href="#intro" variant="outline" size="lg" className="w-full sm:w-auto">
-                  Know More
-                  <span aria-hidden>⌄</span>
-                </Button>
-              </div>
-            </ScrollReveal>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <Button href="/about" variant="primary" size="lg" className="w-full sm:w-auto">
+                Explore SPARK
+                <span aria-hidden>→</span>
+              </Button>
+              <Button href="#intro" variant="outline" size="lg" className="w-full sm:w-auto">
+                Know More
+                <span aria-hidden>⌄</span>
+              </Button>
+            </div>
 
-            <ScrollReveal delay={0.5}>
-              <ConnectPanel />
-            </ScrollReveal>
+            <ConnectPanel />
           </div>
 
           <ScrollIndicator />
