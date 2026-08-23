@@ -68,23 +68,15 @@ export default function Home() {
   return (
     <>
       {/* ── HERO ── */}
+      {/* Single column below lg (content → visual). Two-column 42/58 split at lg+. */}
       <section
         id="hero"
-        className="relative min-h-[calc(100svh-4rem)] grid grid-cols-[1fr_58%] lg:grid-cols-[42%_58%] overflow-hidden border-b border-line"
+        className="relative min-h-[calc(100svh-4rem)] lg:grid lg:grid-cols-[42%_58%] overflow-hidden border-b border-line"
       >
         <SectionIndicator number="01" />
 
-        {/* 3D visual — right column */}
-        <div className="relative h-full w-full lg:col-start-2 lg:row-start-1 z-3d">
-          <HeroMount className="h-full w-full" />
-          {/* Fade left edge on desktop */}
-          <div aria-hidden className="pointer-events-none absolute inset-0 hidden lg:block bg-gradient-to-r from-base via-base/10 to-transparent" />
-          {/* Fade bottom on mobile */}
-          <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-base to-transparent lg:hidden" />
-        </div>
-
-        {/* Content — left column */}
-        <Container className="relative z-content pt-12 pb-16 lg:pt-20 lg:pb-24 lg:col-start-1 lg:row-start-1 self-center">
+        {/* Content — first in DOM: natural flow on mobile/tablet, left cell on desktop */}
+        <Container className="relative z-content pt-12 pb-16 lg:pt-20 lg:pb-24 lg:col-start-1 lg:row-start-1 lg:self-center">
           <div className="max-w-2xl flex flex-col gap-6">
             <p className="font-mono text-xs uppercase tracking-[0.25em] text-accent">
               STUDENT PLATFORM FOR ADVANCEMENT, RESEARCH & KNOWLEDGE
@@ -123,6 +115,15 @@ export default function Home() {
 
           <ScrollIndicator />
         </Container>
+
+        {/* 3D visual — contained block below content on mobile/tablet, right cell on desktop */}
+        <div className="relative z-3d mt-10 mx-auto w-full max-w-md h-[360px] overflow-hidden sm:max-w-lg sm:h-[440px] lg:mt-0 lg:mx-0 lg:max-w-none lg:h-full lg:col-start-2 lg:row-start-1">
+          <HeroMount className="h-full w-full" />
+          {/* Fade edges into background */}
+          <div aria-hidden className="pointer-events-none absolute inset-0 hidden lg:block bg-gradient-to-r from-base via-base/10 to-transparent" />
+          <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-base/80 to-transparent lg:hidden" />
+          <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-base to-transparent lg:hidden" />
+        </div>
       </section>
 
       {/* ── INTRO / WHO WE ARE ── */}

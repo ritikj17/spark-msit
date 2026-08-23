@@ -65,7 +65,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col bg-base font-sans text-ink">
+      <body className="flex min-h-full flex-col overflow-x-hidden bg-base font-sans text-ink">
         <SkipLink />
         <Navbar />
         <main id="main" className="flex-1">

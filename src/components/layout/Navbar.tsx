@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { navigation } from "@/content/navigation";
 import { site } from "@/content/site";
 import { cn } from "@/lib/utils";
@@ -10,8 +10,9 @@ import { Logo } from "@/components/shared/Logo";
 import { Button } from "@/components/ui/Button";
 
 /**
- * Primary navigation shell. Sticky, responsive (collapsible on mobile),
- * keyboard accessible (aria-expanded/controls, closes on route change).
+ * Primary navigation shell. Sticky, responsive (collapsible below lg),
+ * keyboard accessible (aria-expanded/controls, Escape closes, closes on
+ * navigation).
  */
 export function Navbar() {
   const pathname = usePathname();
@@ -24,6 +25,16 @@ export function Navbar() {
     setOpen(false);
   }
 
+  // Escape closes the mobile menu.
+  useEffect(() => {
+    if (!open) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [open]);
+
   const isActive = (href: string) => (href === "/" ? pathname === href : pathname.startsWith(href));
 
   return (
@@ -34,7 +45,7 @@ export function Navbar() {
           <span className="font-display text-base font-semibold tracking-tight text-ink">{site.name}</span>
         </Link>
 
-        <div className="hidden items-center gap-1 md:flex">
+        <div className="hidden items-center gap-1 lg:flex">
           {navigation.items.map((item) => (
             <Link
               key={item.href}
@@ -59,7 +70,7 @@ export function Navbar() {
           aria-expanded={open}
           aria-controls="mobile-nav"
           aria-label="Toggle navigation menu"
-          className="flex size-10 items-center justify-center rounded-sm text-ink transition-colors duration-200 hover:text-accent md:hidden"
+          className="flex size-10 items-center justify-center rounded-sm text-ink transition-colors duration-200 hover:text-accent lg:hidden"
         >
           <span className="relative block h-4 w-5" aria-hidden>
             <span
@@ -85,12 +96,13 @@ export function Navbar() {
       </nav>
 
       {open ? (
-        <nav id="mobile-nav" aria-label="Mobile" className="border-t border-line md:hidden">
+        <nav id="mobile-nav" aria-label="Mobile" className="border-t border-line lg:hidden">
           <div className="mx-auto flex w-full max-w-7xl flex-col gap-1 px-4 py-4 sm:px-6">
             {navigation.items.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
+                onClick={() => setOpen(false)}
                 aria-current={isActive(item.href) ? "page" : undefined}
                 className={cn(
                   "rounded-sm px-3 py-2.5 text-sm text-ink-secondary transition-colors duration-200 hover:text-ink",
@@ -100,7 +112,7 @@ export function Navbar() {
                 {item.label}
               </Link>
             ))}
-            <Button href={navigation.cta.href} variant="outline" size="sm" className="mt-2 self-start">
+            <Button href={navigation.cta.href} onClick={() => setOpen(false)} variant="outline" size="sm" className="mt-2 self-start">
               {navigation.cta.label}
             </Button>
           </div>

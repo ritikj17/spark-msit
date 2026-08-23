@@ -1,6 +1,6 @@
 "use client";
 
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { OrbitControls, Html } from "@react-three/drei";
 import * as THREE from "three";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -242,6 +242,7 @@ function SparkNode({ node, onSelect, selectedId, reduced }: SparkNodeProps) {
       {/* Label via Html overlay — mirrors the locked hero composition */}
       <Html
         transform
+        center
         position={[x, 1.5, z]}
         style={{
           pointerEvents: "none",
@@ -281,6 +282,24 @@ function FpsGuard({ onThrottle }: { onThrottle: (throttle: boolean) => void }) {
   useEffect(() => {
     onThrottle(shouldThrottle);
   }, [shouldThrottle, onThrottle]);
+
+  return null;
+}
+
+/* ── ResponsiveCamera (keeps scene contained on narrow canvases) ───────── */
+
+function ResponsiveCamera() {
+  const camera = useThree((state) => state.camera);
+  const size = useThree((state) => state.size);
+
+  useEffect(() => {
+    const aspect = size.width / Math.max(size.height, 1);
+    // Narrow (mobile-block) canvases pull back so orbiting nodes and labels
+    // stay inside the viewport; wide hero canvases keep the approved framing.
+    const z = aspect < 1.1 ? 27 : 18;
+    camera.position.set(0, 5, z);
+    camera.lookAt(0, 0, 0);
+  }, [camera, size]);
 
   return null;
 }
@@ -326,6 +345,7 @@ function SparkSceneInner({ onNodeSelect, selectedNodeId }: SparkSceneInnerProps)
         <pointLight position={[0, 0, 0]} color={0xf0b13f} intensity={0.3} distance={20} decay={2} />
 
         {/* Scene objects */}
+        <ResponsiveCamera />
         <TechnicalGrid />
         <OrbitRings reduced={reduced} />
         <SparkCore reduced={reduced} />
