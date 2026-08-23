@@ -56,8 +56,15 @@ function subscribe(onChange: () => void) {
   };
 }
 
+/**
+ * Pessimistic SSR snapshot — must be a stable module-level reference:
+ * useSyncExternalStore re-invokes getServerSnapshot and requires an
+ * identical value across calls to avoid an infinite-loop warning.
+ */
+const SERVER_SNAPSHOT: Capability = { webgl: false, tier: "none" };
+
 function getServerSnapshot(): Capability {
-  return { webgl: false, tier: "none" };
+  return SERVER_SNAPSHOT;
 }
 
 /**
