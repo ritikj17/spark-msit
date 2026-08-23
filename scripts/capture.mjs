@@ -59,6 +59,7 @@ const shots = [
   { name: "desktop-1440x900", w: 1440, h: 900, mobile: false },
   { name: "laptop-1280x800", w: 1280, h: 800, mobile: false },
   { name: "tablet-768x1024", w: 768, h: 1024, mobile: true },
+  { name: "mobile-412x915", w: 412, h: 915, mobile: true },
   { name: "mobile-390x844", w: 390, h: 844, mobile: true },
 ];
 

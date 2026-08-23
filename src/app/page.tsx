@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
+import { ProgressRail } from "@/components/layout/ProgressRail";
 import { ScrollReveal } from "@/components/shared/ScrollReveal";
 import { HeroMount } from "@/components/three/HeroMount";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Container } from "@/components/ui/Container";
+import { PillarIcon } from "@/components/ui/PillarIcon";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { SocialIcon } from "@/components/ui/SocialIcon";
 import { site } from "@/content/site";
@@ -51,29 +53,17 @@ function ScrollIndicator() {
   );
 }
 
-function SectionIndicator({ number }: { number: string }) {
-  return (
-    <div className="hidden xl:flex absolute -left-12 top-1/2 -translate-y-1/2 flex-col items-center gap-2" aria-hidden="true">
-      <span className="font-mono text-xs uppercase tracking-[0.2em] text-ink-muted">{number}</span>
-      <div className="flex flex-col gap-1">
-        <span className="size-1 rounded-full bg-accent" />
-        <span className="size-1 rounded-full bg-line" />
-        <span className="size-1 rounded-full bg-line" />
-      </div>
-    </div>
-  );
-}
-
 export default function Home() {
   return (
     <>
+      <ProgressRail />
+
       {/* ── HERO ── */}
-      {/* Single column below lg (content → visual). Two-column 42/58 split at lg+. */}
+      {/* Single column below lg (content → visual). Two-column 40/60 split at lg+. */}
       <section
         id="hero"
-        className="relative min-h-[calc(100svh-4rem)] lg:grid lg:grid-cols-[42%_58%] overflow-hidden border-b border-line"
+        className="relative min-h-[calc(100svh-4.75rem)] overflow-hidden border-b border-line sm:min-h-[calc(100svh-5rem)] lg:grid lg:grid-cols-[40%_60%]"
       >
-        <SectionIndicator number="01" />
 
         {/* Content — first in DOM: natural flow on mobile/tablet, left cell on desktop */}
         <Container className="relative z-content pt-12 pb-16 lg:pt-20 lg:pb-24 lg:col-start-1 lg:row-start-1 lg:self-center">
@@ -87,7 +77,7 @@ export default function Home() {
             </h1>
 
             <p className="font-display text-lg sm:text-xl lg:text-2xl text-ink leading-relaxed">
-              Where Curiosity Meets <span className="text-accent">Creation.</span>
+              Where Curiosity <br className="hidden md:block" /> Meets <span className="text-accent">Creation.</span>
             </p>
 
             <p className="text-base sm:text-lg max-w-xl leading-relaxed text-ink-secondary">
@@ -148,7 +138,7 @@ export default function Home() {
       </section>
 
       {/* ── WHAT WE DO ── */}
-      <section className="py-[var(--spark-section-pad)]">
+      <section id="what-we-do" className="py-[var(--spark-section-pad)]">
         <Container>
           <ScrollReveal>
             <SectionHeader
@@ -168,8 +158,8 @@ export default function Home() {
                       <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink-muted shrink-0">
                         {String(i + 1).padStart(2, "0")}
                       </span>
-                      <div className="flex size-12 shrink-0 items-center justify-center rounded-sm border border-line bg-surface">
-                        <span className="text-xl">{item.icon}</span>
+                      <div className="flex size-12 shrink-0 items-center justify-center rounded-sm border border-line bg-surface text-accent">
+                        <PillarIcon id={item.id} className="size-6" />
                       </div>
                     </div>
                     <h3 className="font-display text-lg font-semibold text-ink mb-2 group-hover:text-accent transition-colors duration-200">
@@ -185,7 +175,7 @@ export default function Home() {
       </section>
 
       {/* ── CLOSING CTA ── */}
-      <section className="relative py-[var(--spark-section-pad)] overflow-hidden">
+      <section id="join" className="relative py-[var(--spark-section-pad)] overflow-hidden">
         <div aria-hidden className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(240,177,63,0.06)_0%,_transparent_70%)]" />
         <Container>
           <div className="flex max-w-2xl flex-col items-center gap-6 text-center relative z-10 mx-auto">

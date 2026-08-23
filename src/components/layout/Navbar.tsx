@@ -10,9 +10,9 @@ import { Logo } from "@/components/shared/Logo";
 import { Button } from "@/components/ui/Button";
 
 /**
- * Primary navigation shell. Sticky, responsive (collapsible below lg),
- * keyboard accessible (aria-expanded/controls, Escape closes, closes on
- * navigation).
+ * Floating technical control panel navigation. Sticky, responsive
+ * (collapsible below lg), keyboard accessible (aria-expanded/controls,
+ * Escape closes, closes on navigation).
  */
 export function Navbar() {
   const pathname = usePathname();
@@ -38,8 +38,11 @@ export function Navbar() {
   const isActive = (href: string) => (href === "/" ? pathname === href : pathname.startsWith(href));
 
   return (
-    <header className="sticky top-0 z-nav border-b border-line bg-base/85 backdrop-blur-sm">
-      <nav aria-label="Primary" className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-nav px-3 pt-3 sm:px-4 sm:pt-4">
+      <nav
+        aria-label="Primary"
+        className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between rounded-panel border border-line bg-base/80 px-4 shadow-card backdrop-blur-md sm:px-6"
+      >
         <Link href="/" className="flex items-center gap-2.5 text-accent" aria-label={`${site.name} home`}>
           <Logo />
           <span className="font-display text-base font-semibold tracking-tight text-ink">{site.name}</span>
@@ -52,11 +55,15 @@ export function Navbar() {
               href={item.href}
               aria-current={isActive(item.href) ? "page" : undefined}
               className={cn(
-                "rounded-sm px-3 py-2 text-sm text-ink-secondary transition-colors duration-200 hover:text-ink",
-                isActive(item.href) && "text-ink",
+                "relative rounded-sm px-3 py-2 text-sm transition-colors duration-200",
+                isActive(item.href) ? "text-ink" : "text-ink-secondary hover:text-ink",
               )}
             >
               {item.label}
+              {/* Small gold active indicator */}
+              {isActive(item.href) ? (
+                <span aria-hidden className="absolute inset-x-3 -bottom-0.5 h-px bg-accent shadow-glow" />
+              ) : null}
             </Link>
           ))}
           <Button href={navigation.cta.href} variant="outline" size="sm" className="ml-3">
@@ -96,8 +103,8 @@ export function Navbar() {
       </nav>
 
       {open ? (
-        <nav id="mobile-nav" aria-label="Mobile" className="border-t border-line lg:hidden">
-          <div className="mx-auto flex w-full max-w-7xl flex-col gap-1 px-4 py-4 sm:px-6">
+        <nav id="mobile-nav" aria-label="Mobile" className="mx-auto mt-2 w-full max-w-7xl lg:hidden">
+          <div className="flex flex-col gap-1 rounded-panel border border-line bg-base/90 p-4 shadow-card backdrop-blur-md">
             {navigation.items.map((item) => (
               <Link
                 key={item.href}
@@ -105,8 +112,8 @@ export function Navbar() {
                 onClick={() => setOpen(false)}
                 aria-current={isActive(item.href) ? "page" : undefined}
                 className={cn(
-                  "rounded-sm px-3 py-2.5 text-sm text-ink-secondary transition-colors duration-200 hover:text-ink",
-                  isActive(item.href) && "text-ink",
+                  "rounded-sm px-3 py-2.5 text-sm transition-colors duration-200",
+                  isActive(item.href) ? "text-accent" : "text-ink-secondary hover:text-ink",
                 )}
               >
                 {item.label}
