@@ -58,6 +58,8 @@ export default function Home() {
     <>
       <ProgressRail />
 
+      {/* Reserved left gutter at xl so the fixed ProgressRail never overlaps copy */}
+      <div className="xl:pl-16">
       {/* ── HERO ── */}
       {/* Single column below lg (content → visual). Two-column 40/60 split at lg+. */}
       <section
@@ -110,7 +112,7 @@ export default function Home() {
         <div className="relative z-3d mt-10 mx-auto w-full max-w-md h-[360px] overflow-hidden sm:max-w-lg sm:h-[440px] lg:mt-0 lg:mx-0 lg:max-w-none lg:h-full lg:col-start-2 lg:row-start-1">
           <HeroMount className="h-full w-full" />
           {/* Fade edges into background */}
-          <div aria-hidden className="pointer-events-none absolute inset-0 hidden lg:block bg-gradient-to-r from-base via-base/10 to-transparent" />
+          <div aria-hidden className="pointer-events-none absolute inset-0 hidden lg:block bg-gradient-to-r from-base/80 via-base/15 to-transparent" />
           <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-base/80 to-transparent lg:hidden" />
           <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-base to-transparent lg:hidden" />
         </div>
@@ -204,6 +206,7 @@ export default function Home() {
           </div>
         </Container>
       </section>
+      </div>
     </>
   );
 }
