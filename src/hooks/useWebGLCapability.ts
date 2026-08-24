@@ -15,6 +15,8 @@ interface Capability {
  * consumer shares a single stable snapshot (pure for useSyncExternalStore).
  */
 let cached: Capability | null = null;
+let retryCount = 0;
+const MAX_RETRIES = 5;
 
 function detect(): Capability {
   if (cached) return cached;
@@ -22,8 +24,7 @@ function detect(): Capability {
   if (typeof document === "undefined") {
     // Server snapshot fallback — pessimistic so SSR renders the static
     // path; real detection happens client-side after mount.
-    cached = { webgl: false, tier: "none" };
-    return cached;
+    return SERVER_SNAPSHOT;
   }
 
   const canvas = document.createElement("canvas");
@@ -51,25 +52,43 @@ function detect(): Capability {
     } else {
       tier = cores < 4 || memory < 4 ? "low" : "high";
     }
+
+    cached = { webgl, tier };
+
+    if (process.env.NODE_ENV !== "production") {
+      console.log(
+        "[SPARK] capability:",
+        JSON.stringify({
+          webgl,
+          tier,
+          dpr: window.devicePixelRatio,
+          cores: navigator.hardwareConcurrency,
+          reducedMotion: window.matchMedia("(prefers-reduced-motion: reduce)")
+            .matches,
+        }),
+      );
+    }
+
+    return cached;
   }
 
-  cached = { webgl, tier };
-
-  if (process.env.NODE_ENV !== "production") {
-    console.log(
-      "[SPARK] capability:",
-      JSON.stringify({
-        webgl,
-        tier,
-        dpr: window.devicePixelRatio,
-        cores: navigator.hardwareConcurrency,
-        reducedMotion: window.matchMedia("(prefers-reduced-motion: reduce)")
-          .matches,
-      }),
-    );
+  // Cold-start race mitigation: GPU context might fail on immediate load 
+  // (e.g. Turbopack blocking the main thread for 20s, or GPU not ready).
+  // Do NOT permanently poison the cache with a false negative.
+  if (retryCount < MAX_RETRIES) {
+    retryCount++;
+    setTimeout(() => {
+      listeners.forEach((cb) => cb());
+    }, 1500);
+  } else {
+    // Only permanently cache the failure after all retries are exhausted.
+    // This avoids retrying forever on genuine non-WebGL environments.
+    cached = { webgl: false, tier: "none" };
+    return cached;
   }
 
-  return cached;
+  // Return stable module-level reference to prevent React infinite loops during retries.
+  return SERVER_SNAPSHOT;
 }
 
 const listeners = new Set<() => void>();
