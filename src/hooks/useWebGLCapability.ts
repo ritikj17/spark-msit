@@ -27,7 +27,10 @@ function detect(): Capability {
   }
 
   const canvas = document.createElement("canvas");
-  const gl = canvas.getContext("webgl2", { failIfMajorPerformanceCaveat: true });
+  // Prefer WebGL2; accept WebGL1 rather than dropping capable machines.
+  const gl =
+    canvas.getContext("webgl2", { failIfMajorPerformanceCaveat: true }) ??
+    canvas.getContext("webgl", { failIfMajorPerformanceCaveat: true });
   const webgl = !!gl;
 
   let tier: Tier = "none";
@@ -39,11 +42,33 @@ function detect(): Capability {
     const memory =
       (navigator as Navigator & { deviceMemory?: number }).deviceMemory ?? 4;
 
-    // Low-tier: mobile, low DPR, few cores, low memory
-    tier = isMobile || dpr < 1.5 || cores < 4 || memory < 4 ? "low" : "high";
+    // devicePixelRatio reflects OS display scaling (125% scaling → 1.25),
+    // NOT GPU capability — it must never downgrade a desktop machine.
+    // Mobile keeps the conservative DPR/cores check; desktop judges on
+    // cores/memory alone.
+    if (isMobile) {
+      tier = dpr < 1.5 || cores < 4 ? "low" : "high";
+    } else {
+      tier = cores < 4 || memory < 4 ? "low" : "high";
+    }
   }
 
   cached = { webgl, tier };
+
+  if (process.env.NODE_ENV !== "production") {
+    console.log(
+      "[SPARK] capability:",
+      JSON.stringify({
+        webgl,
+        tier,
+        dpr: window.devicePixelRatio,
+        cores: navigator.hardwareConcurrency,
+        reducedMotion: window.matchMedia("(prefers-reduced-motion: reduce)")
+          .matches,
+      }),
+    );
+  }
+
   return cached;
 }
 
@@ -70,9 +95,12 @@ function getServerSnapshot(): Capability {
 /**
  * Detects WebGL support and device capability tier.
  * Returns:
- *   - `webgl`: whether WebGL 2 is available
- *   - `tier`: "high" | "low" | "none" (based on GPU + memory heuristics)
+ *   - `webgl`: whether WebGL (2 preferred, 1 accepted) is available
+ *   - `tier`: "high" | "low" | "none"
  *   - `prefersReducedMotion`: user's motion preference
+ *
+ * NOTE: prefersReducedMotion does NOT disable WebGL — reduced-motion users
+ * still receive the real scene with animation disabled inside SparkScene.
  */
 export function useWebGLCapability(): {
   webgl: boolean;

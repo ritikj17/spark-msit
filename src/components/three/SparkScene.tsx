@@ -808,7 +808,6 @@ interface SparkSceneProps {
 
 export function SparkScene({ onNodeSelect }: SparkSceneProps) {
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
-  const prefersReducedMotion = useReducedMotion();
   const { webgl, tier } = useWebGLCapability();
 
   const handleSelect = (node: NodeData) => {
@@ -816,11 +815,13 @@ export function SparkScene({ onNodeSelect }: SparkSceneProps) {
     onNodeSelect?.(node);
   };
 
-  // Fallback chain
+  // Fallback chain. Reduced motion is deliberately NOT here: those users
+  // still get the real WebGL scene — SparkSceneInner disables every
+  // animation via its internal reduced flag.
   if (!webgl || tier === "none") {
     return <StaticFallback />;
   }
-  if (prefersReducedMotion || tier === "low") {
+  if (tier === "low") {
     return <SvgFallback />;
   }
 
