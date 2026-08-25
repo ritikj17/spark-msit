@@ -55,19 +55,18 @@ export function Navbar() {
               href={item.href}
               aria-current={isActive(item.href) ? "page" : undefined}
               className={cn(
-                "relative rounded-sm px-3 py-2 text-sm transition-colors duration-200",
-                isActive(item.href) ? "text-ink" : "text-ink-secondary hover:text-ink",
+                "relative rounded-sm px-3 py-2 text-sm uppercase tracking-wide transition-colors duration-200",
+                isActive(item.href) ? "text-accent" : "text-ink-secondary hover:text-ink",
               )}
             >
               {item.label}
-              {/* Small gold active indicator */}
               {isActive(item.href) ? (
                 <span aria-hidden className="absolute inset-x-3 -bottom-0.5 h-px bg-accent shadow-glow" />
               ) : null}
             </Link>
           ))}
-          <Button href={navigation.cta.href} variant="outline" size="sm" className="ml-3">
-            {navigation.cta.label}
+          <Button href={navigation.cta.href} variant="outline-accent" size="sm" className="ml-3">
+            {navigation.cta.label} →
           </Button>
         </div>
 
@@ -112,15 +111,15 @@ export function Navbar() {
                 onClick={() => setOpen(false)}
                 aria-current={isActive(item.href) ? "page" : undefined}
                 className={cn(
-                  "rounded-sm px-3 py-2.5 text-sm transition-colors duration-200",
+                  "rounded-sm px-3 py-2.5 text-sm uppercase tracking-wide transition-colors duration-200",
                   isActive(item.href) ? "text-accent" : "text-ink-secondary hover:text-ink",
                 )}
               >
                 {item.label}
               </Link>
             ))}
-            <Button href={navigation.cta.href} onClick={() => setOpen(false)} variant="outline" size="sm" className="mt-2 self-start">
-              {navigation.cta.label}
+            <Button href={navigation.cta.href} onClick={() => setOpen(false)} variant="outline-accent" size="sm" className="mt-2 self-start">
+              {navigation.cta.label} →
             </Button>
           </div>
         </nav>

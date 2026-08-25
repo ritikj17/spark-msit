@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
-type ButtonVariant = "primary" | "outline" | "ghost";
+type ButtonVariant = "primary" | "outline" | "outline-accent" | "ghost";
 type ButtonSize = "sm" | "md" | "lg";
 
 interface ButtonProps {
@@ -23,6 +23,8 @@ const variantClasses: Record<ButtonVariant, string> = {
     "bg-accent text-base-deep hover:bg-accent-bright font-medium shadow-glow transition-colors duration-200",
   outline:
     "border border-line text-ink hover:border-accent hover:text-accent transition-colors duration-200",
+  "outline-accent":
+    "border border-accent text-accent hover:bg-accent/10 hover:shadow-glow transition-colors duration-200",
   ghost: "text-ink-secondary hover:text-ink transition-colors duration-200",
 };
 
