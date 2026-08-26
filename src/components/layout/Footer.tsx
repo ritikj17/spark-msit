@@ -3,7 +3,9 @@ import { navigation } from "@/content/navigation";
 import { site } from "@/content/site";
 import { Logo } from "@/components/shared/Logo";
 import { Container } from "@/components/ui/Container";
-import { SocialLink } from "@/components/ui/SocialLink";
+import { SocialIcon } from "@/components/ui/SocialIcon";
+import { ScrollToTop } from "./ScrollToTop";
+import type { SocialPlatform } from "@/content/types";
 
 /**
  * Site footer shell: brand, navigation, official social links, institution.
@@ -12,48 +14,65 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-line bg-base-deep">
-      <Container className="flex flex-col gap-10 py-12">
-        <div className="flex flex-col gap-10 md:flex-row md:justify-between">
-          <div className="max-w-sm">
-            <Link href="/" className="flex items-center gap-2.5 text-accent" aria-label={`${site.name} home`}>
-              <Logo />
-              <span className="font-display text-base font-semibold tracking-tight text-ink">{site.name}</span>
-            </Link>
-            <p className="mt-3 font-mono text-xs uppercase tracking-[0.2em] text-ink-muted">{site.nameLong}</p>
-            <p className="mt-2 text-sm text-ink-secondary">{site.tagline}</p>
-          </div>
-
-          <nav aria-label="Footer" className="flex flex-col gap-2">
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-ink-muted">Explore</p>
-            {navigation.items.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="text-sm text-ink-secondary transition-colors duration-200 hover:text-accent"
-              >
-                {item.label}
+    <footer className="mt-auto pb-6 pt-12 sm:pb-8">
+      <Container>
+        <div className="flex flex-col rounded-panel border border-line bg-surface p-6 shadow-card sm:p-8 md:p-10">
+          {/* Top section: Brand, Nav, Social */}
+          <div className="flex flex-col gap-10 lg:flex-row lg:items-center lg:justify-between">
+            {/* Brand */}
+            <div className="flex flex-col items-center gap-3 lg:items-start">
+              <Link href="/" className="flex items-center gap-2.5 text-accent" aria-label={`${site.name} home`}>
+                <Logo />
+                <span className="font-display text-lg font-semibold tracking-tight text-ink">{site.name}</span>
               </Link>
-            ))}
-          </nav>
+              <p className="text-sm text-ink-secondary">Research. Collaborate. Discover.</p>
+            </div>
 
-          <div className="flex flex-col gap-3">
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-ink-muted">Connect</p>
-            {Object.entries(site.socials).map(([platform, link]) => (
-              <SocialLink key={platform} platform={platform as keyof typeof site.socials} link={link} />
-            ))}
+            {/* Navigation */}
+            <nav aria-label="Footer" className="flex flex-wrap items-center justify-center gap-x-6 gap-y-4">
+              {navigation.items.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="text-sm uppercase tracking-wide text-ink-secondary transition-colors duration-200 hover:text-ink"
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
+
+            {/* Social */}
+            <div className="flex flex-col items-center gap-4 lg:items-end">
+              <p className="font-mono text-xs uppercase tracking-[0.2em] text-ink-muted">Follow Us</p>
+              <div className="flex items-center gap-3">
+                {Object.entries(site.socials).map(([platform, link]) => (
+                  <a
+                    key={platform}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={link.label}
+                    className="group flex size-10 items-center justify-center rounded-sm border border-line bg-base text-ink-secondary transition-colors duration-200 hover:border-accent hover:bg-base-deep hover:text-accent"
+                  >
+                    <SocialIcon platform={platform as SocialPlatform} className="size-5" />
+                  </a>
+                ))}
+              </div>
+            </div>
           </div>
-        </div>
 
-        <div className="flex flex-col gap-3 border-t border-line pt-6 text-sm text-ink-muted md:flex-row md:items-center md:justify-between">
-          <p>
-            {site.institution.name} · {site.institution.address}
-          </p>
-          <p>
-            © {year} {site.name} {site.institution.shortName}
-          </p>
+          {/* Divider */}
+          <div className="my-8 h-px w-full bg-line" aria-hidden="true" />
+
+          {/* Bottom section: Copyright */}
+          <div className="flex flex-col gap-1 text-sm text-ink-muted sm:flex-row sm:gap-2">
+            <span>© {year} {site.name} {site.institution.shortName}</span>
+            <span className="hidden sm:inline">|</span>
+            <span>All rights reserved.</span>
+          </div>
         </div>
       </Container>
+      <ScrollToTop />
     </footer>
   );
 }
