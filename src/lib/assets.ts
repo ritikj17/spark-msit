@@ -17,6 +17,7 @@ export type AssetToken = string;
 const PLACEHOLDER_TO_PATH: Record<string, string | null> = {
   // Brand
   "[SPARK-LOGO]": null,
+  "[SPARK-CAMPUS]": null,
 
   // Faculty
   "[SPARK-FACULTY-PHOTO]": null,
