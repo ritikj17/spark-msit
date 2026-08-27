@@ -18,6 +18,7 @@ const PLACEHOLDER_TO_PATH: Record<string, string | null> = {
   // Brand
   "[SPARK-LOGO]": null,
   "[SPARK-CAMPUS]": null,
+  "[SPARK-TEAM-HERO-VISUAL]": null,
 
   // Faculty
   "[SPARK-FACULTY-PHOTO]": null,
