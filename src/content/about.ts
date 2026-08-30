@@ -60,7 +60,7 @@ export const aboutContent: AboutConfig = {
   },
   closing: {
     line1: "You don't need to know everything to get started.",
-    line2: "You just need to be curious. ⚡",
+    line2: "You just need to be curious.",
     cta: "FIND YOUR SPARK →",
   },
 };
