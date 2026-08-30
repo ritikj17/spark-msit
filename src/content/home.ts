@@ -13,7 +13,7 @@ export const whatWeDo: WhatWeDoItem[] = [
     title: "Innovation",
     icon: "💡",
     description:
-      "Turn ideas into projects and practical solutions. Prototype, iterate, and build things that solve real problems.",
+      "Turn ideas into projects and practical solutions. From prototyping hardware to deploying software — we help build solutions for real problems.",
   },
   {
     id: "collaboration",
