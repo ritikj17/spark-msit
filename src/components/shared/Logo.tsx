@@ -1,35 +1,32 @@
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 interface LogoProps {
   className?: string;
+  size?: number;
 }
 
 /**
- * SPARK brand mark placeholder (inline SVG).
- * Replaced by the final official [SPARK-LOGO] asset when supplied — see
- * src/lib/assets.ts.
+ * Official SPARK brand logo component.
+ * Renders the authoritative SPARK emblem asset with proper proportions and responsiveness.
  */
-export function Logo({ className }: LogoProps) {
+export function Logo({ className, size = 38 }: LogoProps) {
   return (
-    <svg
-      viewBox="0 0 32 32"
-      fill="none"
-      className={cn("size-8", className)}
-      aria-hidden
+    <div
+      className={cn(
+        "relative flex shrink-0 items-center justify-center overflow-hidden rounded-full border border-line bg-white/95 p-0.5 shadow-sm transition-transform duration-200 hover:scale-105",
+        className,
+      )}
+      style={{ width: size, height: size }}
     >
-      <rect
-        x="1.5"
-        y="1.5"
-        width="29"
-        height="29"
-        rx="7"
-        stroke="currentColor"
-        strokeOpacity="0.35"
+      <Image
+        src="/assets/brand/spark-logo.jpg"
+        alt="SPARK MSIT Official Logo"
+        width={size * 2}
+        height={size * 2}
+        priority
+        className="size-full rounded-full object-cover object-center"
       />
-      <path
-        d="M17.5 5 8 18h6l-1.5 9L22 14h-6l1.5-9Z"
-        fill="currentColor"
-      />
-    </svg>
+    </div>
   );
 }

@@ -30,7 +30,7 @@ export function CTAStrip({
   return (
     <div
       className={cn(
-        "relative flex flex-col justify-between gap-6 overflow-hidden rounded-panel border border-line bg-surface p-6 shadow-card md:flex-row md:items-center sm:p-8 md:p-10",
+        "relative flex flex-col justify-between gap-6 py-8 border-y border-line md:flex-row md:items-center",
         className,
       )}
     >

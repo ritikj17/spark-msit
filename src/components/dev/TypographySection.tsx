@@ -15,11 +15,11 @@ export function TypographySection() {
         />
 
         <div className="mt-10 flex flex-col gap-14">
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3 overflow-hidden">
             <p className="font-mono text-xs uppercase tracking-[0.2em] text-ink-muted">Display — Space Grotesk</p>
-            <p className="font-display text-6xl font-semibold tracking-tight text-ink sm:text-7xl">SPARK ⚡</p>
-            <p className="font-display text-4xl font-semibold tracking-tight text-ink sm:text-5xl">{specimen}</p>
-            <p className="font-display text-2xl font-semibold tracking-tight text-ink sm:text-3xl">{specimen}</p>
+            <p className="font-display text-5xl font-semibold tracking-tight text-ink sm:text-6xl lg:text-7xl">SPARK</p>
+            <p className="font-display text-3xl font-semibold tracking-tight text-ink break-words sm:text-4xl lg:text-5xl">{specimen}</p>
+            <p className="font-display text-xl font-semibold tracking-tight text-ink break-words sm:text-2xl lg:text-3xl">{specimen}</p>
           </div>
 
           <div className="flex flex-col gap-3">
