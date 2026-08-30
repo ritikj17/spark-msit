@@ -1,7 +1,7 @@
 "use client";
 
 import { Canvas, useFrame, useThree, type ThreeEvent } from "@react-three/fiber";
-import { OrbitControls, Html } from "@react-three/drei";
+import { OrbitControls, Html, Billboard, Text } from "@react-three/drei";
 import * as THREE from "three";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
@@ -9,7 +9,6 @@ import { useWebGLCapability } from "@/hooks/useWebGLCapability";
 import { useThreePerformance } from "@/hooks/useThreePerformance";
 import { cn } from "@/lib/utils";
 import { PillarIcon } from "@/components/ui/PillarIcon";
-import { SvgFallback } from "./SvgFallback";
 import { StaticFallback } from "./StaticFallback";
 
 /* ── Types & data ─────────────────────────────────────────────────────── */
@@ -23,11 +22,11 @@ interface NodeData {
 
 /** Short forms of the approved What We Do descriptions. */
 const NODES: NodeData[] = [
-  { id: "research", label: "Research", angle: 270, description: "Explore new ideas and ask questions." },
-  { id: "innovation", label: "Innovation", angle: 20, description: "Turn ideas into projects and solutions." },
-  { id: "collaboration", label: "Collaboration", angle: 155, description: "Work and learn with students and mentors." },
-  { id: "workshops", label: "Workshops", angle: 210, description: "Learn new skills through hands-on sessions." },
-  { id: "opportunities", label: "Opportunities", angle: 330, description: "Projects, publications, funding and more." },
+  { id: "research", label: "RESEARCH", angle: 265, description: "Explore new ideas and ask questions." },
+  { id: "innovation", label: "INNOVATION", angle: 25, description: "Turn ideas into projects and solutions." },
+  { id: "collaboration", label: "COLLABORATION", angle: 140, description: "Work and learn with students and mentors." },
+  { id: "workshops", label: "WORKSHOPS", angle: 205, description: "Learn new skills through hands-on sessions." },
+  { id: "opportunities", label: "OPPORTUNITIES", angle: 325, description: "Projects, publications, funding and more." },
 ];
 
 /** Deterministic PRNG — keeps render pure while varying placement. */
@@ -129,43 +128,45 @@ function SparkCore({ reduced }: { reduced: boolean }) {
     <group>
       {/* Soft surrounding halo — reinforces, never replaces, the sphere */}
       <group ref={haloRef}>
-        <sprite scale={[11, 11, 1]}>
-          <spriteMaterial map={getGlowTexture()} transparent opacity={0.34} blending={THREE.AdditiveBlending} depthWrite={false} />
+        <sprite scale={[16, 16, 1]}>
+          <spriteMaterial map={getGlowTexture()} transparent opacity={0.4} blending={THREE.AdditiveBlending} depthWrite={false} />
         </sprite>
-        <sprite scale={[6.4, 6.4, 1]}>
-          <spriteMaterial map={getGlowTexture()} transparent opacity={0.5} blending={THREE.AdditiveBlending} depthWrite={false} />
+        <sprite scale={[9.5, 9.5, 1]}>
+          <spriteMaterial map={getGlowTexture()} transparent opacity={0.58} blending={THREE.AdditiveBlending} depthWrite={false} />
         </sprite>
       </group>
 
       <group ref={spinRef}>
-        {/* Luminous heart — visible through the glass shell */}
+        {/* Luminous heart — brilliant radiant golden glowing orb */}
         <mesh>
-          <sphereGeometry args={[1.18, 40, 40]} />
-          <meshBasicMaterial color={0xffd98a} />
-        </mesh>
-        <mesh>
-          <sphereGeometry args={[1.52, 32, 32]} />
-          <meshBasicMaterial color={0xf7c469} transparent opacity={0.4} blending={THREE.AdditiveBlending} depthWrite={false} />
+          <sphereGeometry args={[1.6, 48, 48]} />
+          <meshBasicMaterial color={0xffdc73} toneMapped={false} />
         </mesh>
 
-        {/* Dark glass shell */}
+        {/* Soft golden aura corona surrounding the inner orb */}
         <mesh>
-          <sphereGeometry args={[1.95, 48, 48]} />
+          <sphereGeometry args={[1.82, 36, 36]} />
+          <meshBasicMaterial color={0xf0b13f} transparent opacity={0.45} blending={THREE.AdditiveBlending} depthWrite={false} />
+        </mesh>
+
+        {/* Optical glass shell with high specular reflection */}
+        <mesh>
+          <sphereGeometry args={[2.72, 64, 64]} />
           <meshStandardMaterial
-            color={0x171a20}
-            metalness={0.85}
-            roughness={0.28}
+            color={0x12151c}
+            metalness={0.88}
+            roughness={0.1}
             transparent
-            opacity={0.34}
+            opacity={0.24}
             emissive={0xf0b13f}
-            emissiveIntensity={0.12}
+            emissiveIntensity={0.15}
             depthWrite={false}
           />
         </mesh>
 
-        {/* Fresnel edge — reads as illuminated silhouette */}
+        {/* Fresnel rim — crisp illuminated silhouette */}
         <mesh>
-          <sphereGeometry args={[2.02, 48, 48]} />
+          <sphereGeometry args={[2.78, 64, 64]} />
           <shaderMaterial
             vertexShader={FRESNEL_VERT}
             fragmentShader={FRESNEL_FRAG}
@@ -177,28 +178,46 @@ function SparkCore({ reduced }: { reduced: boolean }) {
           />
         </mesh>
 
-        {/* Lat/long wireframe topology */}
+        {/* Lat/long technical wireframe */}
         <mesh>
-          <sphereGeometry args={[2.1, 30, 22]} />
-          <meshBasicMaterial color={0xf0b13f} transparent opacity={0.3} wireframe depthWrite={false} />
+          <sphereGeometry args={[2.84, 36, 24]} />
+          <meshBasicMaterial color={0xf0b13f} transparent opacity={0.28} wireframe depthWrite={false} />
         </mesh>
 
-        {/* Equatorial accent ring on the sphere */}
+        {/* Dual equatorial technical accent rings */}
         <mesh rotation={[Math.PI / 2.15, 0, 0.2]}>
-          <torusGeometry args={[2.24, 0.02, 8, 96]} />
-          <meshBasicMaterial color={0xffd98a} transparent opacity={0.5} side={THREE.DoubleSide} depthWrite={false} />
+          <torusGeometry args={[2.98, 0.022, 12, 120]} />
+          <meshBasicMaterial color={0xffd98a} transparent opacity={0.65} side={THREE.DoubleSide} depthWrite={false} />
+        </mesh>
+        <mesh rotation={[Math.PI / 2.15, 0, 0.2]}>
+          <torusGeometry args={[3.12, 0.012, 8, 96]} />
+          <meshBasicMaterial color={0xf0b13f} transparent opacity={0.4} side={THREE.DoubleSide} depthWrite={false} />
         </mesh>
       </group>
 
       {/* Core point light — primary source, gently breathing */}
-      <pointLight ref={lightRef} color={0xf0b13f} intensity={100} distance={40} decay={2} />
+      <pointLight ref={lightRef} color={0xf0b13f} intensity={140} distance={50} decay={2} />
 
-      {/* SPARK wordmark inside the sphere */}
-      <Html center position={[0, 0, 0]} style={{ pointerEvents: "none" }} zIndexRange={[5, 0]}>
-        <span className="font-display text-2xl md:text-3xl font-bold tracking-[0.16em] text-accent-bright drop-shadow-[0_0_24px_rgba(240,177,63,0.75)] select-none">
+      {/* Radiant Glowing SPARK wordmark inside the glowing golden sphere */}
+      <Billboard follow={true} position={[0, 0, 0]}>
+        {/* Golden radiant glow aura behind the letters */}
+        <sprite scale={[5.2, 3.2, 1]} position={[0, 0, -0.04]}>
+          <spriteMaterial map={getGlowTexture()} color={0xffea9f} transparent opacity={0.95} blending={THREE.AdditiveBlending} depthWrite={false} />
+        </sprite>
+        <Text
+          fontSize={1.05}
+          letterSpacing={0.2}
+          anchorX="center"
+          anchorY="middle"
+          outlineWidth={0.07}
+          outlineColor="#5c3400"
+          outlineOpacity={1}
+          outlineBlur={0.02}
+        >
           SPARK
-        </span>
-      </Html>
+          <meshBasicMaterial toneMapped={false} color="#ffffff" transparent opacity={1} depthTest={false} />
+        </Text>
+      </Billboard>
     </group>
   );
 }
@@ -213,11 +232,11 @@ interface OrbitPlane {
 }
 
 const ORBIT_PLANES: OrbitPlane[] = [
-  { radius: 4.8, tilt: [0.18, 0, -0.08], speed: 0.05, opacity: 0.5 },
-  { radius: 5.8, tilt: [-0.3, 0, 0.24], speed: -0.038, opacity: 0.42 },
-  { radius: 6.8, tilt: [0.42, 0, -0.3], speed: 0.03, opacity: 0.36 },
-  { radius: 7.9, tilt: [-0.5, 0, 0.38], speed: -0.024, opacity: 0.3 },
-  { radius: 5.3, tilt: [0.62, 0, 0.5], speed: 0.043, opacity: 0.46 },
+  { radius: 5.2, tilt: [0.18, 0, -0.08], speed: 0.035, opacity: 0.5 }, // Research (inner left)
+  { radius: 6.2, tilt: [-0.36, 0, 0.26], speed: -0.03, opacity: 0.44 }, // Workshops (mid bottom-left)
+  { radius: 7.0, tilt: [-0.22, 0, 0.18], speed: -0.026, opacity: 0.42 }, // Innovation (mid right)
+  { radius: 7.8, tilt: [0.32, 0, -0.22], speed: 0.022, opacity: 0.38 }, // Collaboration (mid-outer bottom-right)
+  { radius: 8.4, tilt: [0.42, 0, 0.3], speed: 0.018, opacity: 0.35 }, // Opportunities (outer top — tightened for perfect bounds)
 ];
 
 function OrbitSystem({ reduced, selectedId, onSelect, s, compact }: {
@@ -377,28 +396,25 @@ function SparkNode({ node, radius, selected, onSelect, reduced, compact }: {
           transform={!compact}
           center
           position={[0, 1.35, 0]}
-          style={{ pointerEvents: "none", opacity: active ? 1 : 0.85, transition: "opacity 200ms" }}
+          style={{ pointerEvents: "none", opacity: active ? 0.95 : 0.75, transition: "opacity 200ms" }}
           zIndexRange={[5, 0]}
         >
-          <div className="flex flex-col items-center gap-1.5">
+          <div className="flex flex-col items-center gap-1">
             {/* Circular icon container */}
             <span className={cn(
-              "flex size-9 items-center justify-center rounded-full border backdrop-blur-sm",
+              "flex size-8 items-center justify-center rounded-full border backdrop-blur-xs",
               active
-                ? "border-accent bg-accent/15 text-accent shadow-glow"
-                : "border-accent/60 bg-base-deep/85 text-accent",
+                ? "border-accent bg-accent/20 text-accent shadow-glow"
+                : "border-accent/40 bg-base-deep/80 text-accent/90",
             )}>
-              <PillarIcon id={node.id} className="size-[18px]" />
+              <PillarIcon id={node.id} className="size-4" />
             </span>
-            <span className="flex flex-col items-center gap-0.5">
+            <span className="flex flex-col items-center">
               <span className={cn(
-                "font-mono text-[11px] font-semibold uppercase tracking-[0.16em] drop-shadow-[0_1px_4px_rgba(0,0,0,0.9)]",
-                active ? "text-accent" : "text-ink",
+                "font-mono text-[10px] font-semibold uppercase tracking-[0.14em] drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]",
+                active ? "text-accent" : "text-ink/90",
               )}>
                 {node.label}
-              </span>
-              <span className="max-w-[150px] text-center text-[10px] leading-snug text-ink-secondary drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">
-                {node.description}
               </span>
             </span>
           </div>
@@ -566,7 +582,7 @@ function TechnicalGrid() {
   );
 }
 
-/* ── ParticleField — floating dust (Points, additive) ──────────────────── */
+/* ── ParticleField — floating golden stardust (Points, additive) ───────── */
 
 function ParticleField({ count, s, reduced }: { count: number; s: number; reduced: boolean }) {
   const pointsRef = useRef<THREE.Points>(null);
@@ -577,20 +593,34 @@ function ParticleField({ count, s, reduced }: { count: number; s: number; reduce
     const positions = new Float32Array(count * 3);
     const colors = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
-      const radius = (2.5 + rand() * 8.5) * Math.max(s, 0.72);
+      const radius = (2.2 + rand() * 9.5) * Math.max(s, 0.72);
       const theta = rand() * Math.PI * 2;
       const phi = Math.acos(2 * rand() - 1);
       positions[i * 3] = radius * Math.sin(phi) * Math.cos(theta);
-      positions[i * 3 + 1] = radius * Math.cos(phi) * 0.72;
+      positions[i * 3 + 1] = radius * Math.cos(phi) * 0.76;
       positions[i * 3 + 2] = radius * Math.sin(phi) * Math.sin(theta);
-      if (rand() > 0.5) {
-        colors[i * 3] = 1;
-        colors[i * 3 + 1] = 0.74;
-        colors[i * 3 + 2] = 0.2;
+      
+      // 85% Golden / warm amber dots, 15% radiant bright starlight
+      if (rand() > 0.15) {
+        // Deep gold, bright gold, and warm amber variations
+        const goldVar = rand();
+        if (goldVar > 0.6) {
+          colors[i * 3] = 1.0;
+          colors[i * 3 + 1] = 0.78;
+          colors[i * 3 + 2] = 0.22;
+        } else if (goldVar > 0.3) {
+          colors[i * 3] = 1.0;
+          colors[i * 3 + 1] = 0.88;
+          colors[i * 3 + 2] = 0.42;
+        } else {
+          colors[i * 3] = 0.95;
+          colors[i * 3 + 1] = 0.65;
+          colors[i * 3 + 2] = 0.15;
+        }
       } else {
-        colors[i * 3] = 0.82;
-        colors[i * 3 + 1] = 0.86;
-        colors[i * 3 + 2] = 0.94;
+        colors[i * 3] = 1.0;
+        colors[i * 3 + 1] = 0.96;
+        colors[i * 3 + 2] = 0.88;
       }
     }
     g.setAttribute("position", new THREE.BufferAttribute(positions, 3));
@@ -609,10 +639,10 @@ function ParticleField({ count, s, reduced }: { count: number; s: number; reduce
   return (
     <points ref={pointsRef} geometry={geometry}>
       <pointsMaterial
-        size={0.09}
+        size={0.11}
         vertexColors
         transparent
-        opacity={0.68}
+        opacity={0.82}
         depthWrite={false}
         blending={THREE.AdditiveBlending}
         sizeAttenuation
@@ -684,18 +714,6 @@ function Atmosphere() {
   );
 }
 
-/* ── FpsGuard (must live INSIDE the Canvas) ────────────────────────────── */
-
-function FpsGuard({ onThrottle }: { onThrottle: (throttle: boolean) => void }) {
-  const { shouldThrottle } = useThreePerformance();
-
-  useEffect(() => {
-    onThrottle(shouldThrottle);
-  }, [shouldThrottle, onThrottle]);
-
-  return null;
-}
-
 /* ── ResponsiveCamera (keeps scene contained on narrow canvases) ───────── */
 
 function ResponsiveCamera() {
@@ -704,16 +722,31 @@ function ResponsiveCamera() {
 
   useEffect(() => {
     const width = size.width;
-    // Contained blocks (mobile/tablet) pull back so orbiting nodes and
-    // labels stay inside the viewport; the desktop hero cell keeps the
-    // approved full framing with the dominant core.
+    // Contained blocks pull back so top axis and orbiting nodes stay inside
+    // the viewport with clean breathing room beneath the navbar.
     if (width < 640) {
-      camera.position.set(0, 7.2, 30);
+      camera.position.set(0, 5.5, 26);
+      camera.lookAt(0, -0.05, 0);
+    } else if (width < 1024) {
+      camera.position.set(0, 3.8, 21.5);
+      camera.lookAt(0, 0, 0);
     } else {
-      camera.position.set(0, 4.6, 17);
+      camera.position.set(0, 3.5, 19.5);
+      camera.lookAt(0, 0.05, 0);
     }
-    camera.lookAt(0, -0.5, 0);
   }, [camera, size]);
+
+  return null;
+}
+
+/* ── FpsGuard (must live INSIDE the Canvas) ────────────────────────────── */
+
+function FpsGuard({ onThrottle }: { onThrottle: (throttle: boolean) => void }) {
+  const { shouldThrottle } = useThreePerformance();
+
+  useEffect(() => {
+    onThrottle(shouldThrottle);
+  }, [shouldThrottle, onThrottle]);
 
   return null;
 }
@@ -728,12 +761,12 @@ function Universe({ onNodeSelect, selectedNodeId, throttled }: {
   const reduced = useReducedMotion();
   const { compact, s } = useSceneConfig();
 
-  const particleCount = throttled ? 800 : compact ? 1600 : 3200;
-  const debrisCount = throttled ? 18 : compact ? 32 : 60;
+  const particleCount = throttled ? 600 : compact ? 1200 : 2400;
+  const debrisCount = throttled ? 16 : compact ? 28 : 50;
 
   return (
     <>
-      <fog attach="fog" args={[0x0a0b0d, 10, 42]} />
+      <fog attach="fog" args={[0x0a0b0d, 10, 48]} />
 
       {/* Lighting hierarchy — core primary, platform secondary, env tertiary */}
       <ambientLight color={0x93a4c4} intensity={0.18} />
@@ -769,7 +802,7 @@ function SparkSceneInner({ onNodeSelect, selectedNodeId }: SparkSceneInnerProps)
   return (
     <Canvas
       gl={{ preserveDrawingBuffer: false, antialias: !isLowEndDevice, alpha: true }}
-      camera={{ position: [0, 4.6, 17], fov: 42 }}
+      camera={{ position: [0, 3.5, 19.5], fov: 41 }}
       dpr={isLowEnd ? [1, 1.5] : [1, 2]}
       onCreated={({ gl }) => {
         gl.toneMapping = THREE.ACESFilmicToneMapping;
@@ -795,6 +828,7 @@ function SparkSceneInner({ onNodeSelect, selectedNodeId }: SparkSceneInnerProps)
         dampingFactor={0.05}
         autoRotate={!prefersReducedMotion}
         autoRotateSpeed={0.12}
+        target={[0, 0.05, 0]}
       />
     </Canvas>
   );
@@ -815,14 +849,10 @@ export function SparkScene({ onNodeSelect }: SparkSceneProps) {
     onNodeSelect?.(node);
   };
 
-  // Fallback chain. Reduced motion is deliberately NOT here: those users
-  // still get the real WebGL scene — SparkSceneInner disables every
-  // animation via its internal reduced flag.
+  // Fallback chain: If WebGL is completely unsupported, render StaticFallback.
+  // Reduced motion users still mount the real WebGL scene with animation gated off.
   if (!webgl || tier === "none") {
     return <StaticFallback />;
-  }
-  if (tier === "low") {
-    return <SvgFallback />;
   }
 
   return <SparkSceneInner onNodeSelect={handleSelect} selectedNodeId={selectedNodeId} />;
