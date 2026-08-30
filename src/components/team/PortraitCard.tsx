@@ -13,9 +13,21 @@ interface PortraitCardProps {
   className?: string;
 }
 
+function getInitials(name: string | null): string {
+  if (!name) return "";
+  return name
+    .split(" ")
+    .filter((w) => !/^(dr|mr|ms|mrs|prof)\.?$/i.test(w))
+    .map((w) => w[0])
+    .filter(Boolean)
+    .slice(0, 2)
+    .join("")
+    .toUpperCase();
+}
+
 /**
  * Reusable member portrait card for team rosters.
- * Supports active photo/placeholder states and pending selection positions.
+ * Supports active photo/monogram states and intentional pending selection positions.
  */
 export function PortraitCard({
   name,
@@ -28,24 +40,25 @@ export function PortraitCard({
   className,
 }: PortraitCardProps) {
   const isPending = status === "pending" || !name;
+  const initials = getInitials(name);
 
   return (
     <div
       className={cn(
-        "group flex flex-col overflow-hidden rounded-panel border border-line bg-surface p-4 shadow-card transition-colors duration-200 hover:border-line-strong",
-        isPending && "border-dashed opacity-85",
+        "group flex flex-col transition-colors",
+        isPending && "opacity-80 grayscale",
         className,
       )}
     >
       {/* Portrait frame */}
-      <div className="relative w-full overflow-hidden rounded-sm bg-base">
-        {isPending || !photo ? (
+      <div className="relative w-full overflow-hidden rounded-sm bg-base border border-line/60">
+        {isPending ? (
           <div
-            className="flex w-full items-center justify-center rounded-sm border border-line/60 bg-base text-center p-4"
+            className="flex w-full items-center justify-center bg-base text-center p-6"
             style={{ aspectRatio }}
           >
-            <div className="flex flex-col items-center gap-2">
-              <div className="flex size-12 items-center justify-center rounded-full border border-line bg-surface text-ink-muted">
+            <div className="flex flex-col items-center gap-2.5">
+              <div className="flex size-14 items-center justify-center rounded-full border border-dashed border-line-strong bg-surface text-ink-muted">
                 <svg
                   viewBox="0 0 24 24"
                   fill="none"
@@ -58,26 +71,40 @@ export function PortraitCard({
                   <circle cx="12" cy="7" r="4" />
                 </svg>
               </div>
-              <p className="font-mono text-[11px] uppercase tracking-wider text-ink-muted">
+              <p className="font-mono text-[11px] uppercase tracking-wider text-accent">
                 Position Open
               </p>
             </div>
           </div>
-        ) : (
+        ) : photo && !photo.startsWith("[SPARK-") ? (
           <SparkImage
             src={photo}
             alt={name ?? role}
             aspectRatio={aspectRatio}
-            className="transition-transform duration-300 group-hover:scale-[1.02]"
+            className="transition-transform duration-500 group-hover:scale-[1.02]"
           />
+        ) : (
+          <div
+            className="flex w-full items-center justify-center bg-gradient-to-b from-surface to-base-deep p-6"
+            style={{ aspectRatio }}
+          >
+            <div className="flex flex-col items-center gap-2">
+              <div className="flex size-16 items-center justify-center rounded-full border border-accent/40 bg-accent/10 font-display text-xl font-bold text-accent shadow-glow transition-transform duration-300 group-hover:scale-105">
+                {initials || "S"}
+              </div>
+              <span className="font-mono text-[10px] uppercase tracking-widest text-ink-muted">
+                SPARK ROSTER
+              </span>
+            </div>
+          </div>
         )}
       </div>
 
       {/* Info block */}
-      <div className="mt-3.5 flex flex-1 flex-col justify-between gap-2">
+      <div className="mt-4 flex flex-1 flex-col justify-between gap-2">
         <div>
           <div className="flex flex-wrap items-center gap-2">
-            <h4 className="font-display text-base font-semibold tracking-tight text-ink">
+            <h4 className="font-display text-base sm:text-lg font-semibold tracking-tight text-ink group-hover:text-accent transition-colors duration-200">
               {isPending ? "Pending Selection" : name}
             </h4>
             {isPending ? (
@@ -86,11 +113,11 @@ export function PortraitCard({
               <Chip variant="accent">{department}</Chip>
             ) : null}
           </div>
-          <p className="font-mono text-xs uppercase tracking-wider text-accent">
+          <p className="font-mono text-xs uppercase tracking-wider text-accent mt-0.5">
             {role}
           </p>
           {description ? (
-            <p className="mt-2 text-xs leading-relaxed text-ink-secondary line-clamp-3">
+            <p className="mt-2.5 text-xs leading-relaxed text-ink-secondary">
               {description}
             </p>
           ) : null}

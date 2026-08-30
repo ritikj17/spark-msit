@@ -3,10 +3,8 @@ import { Container } from "@/components/ui/Container";
 import { ScrollReveal } from "@/components/shared/ScrollReveal";
 import { Button } from "@/components/ui/Button";
 import { SectionEyebrow } from "@/components/ui/SectionEyebrow";
-import { SparkImage } from "@/components/shared/SparkImage";
-import { StatBlock } from "@/components/ui/StatBlock";
 import { PortraitCard } from "@/components/team/PortraitCard";
-import { DeptIcon } from "@/components/ui/DeptIcon";
+import { SparkImage } from "@/components/shared/SparkImage";
 import { faculty, executivePanel, departments } from "@/content/team";
 
 export const metadata: Metadata = {
@@ -15,278 +13,283 @@ export const metadata: Metadata = {
   alternates: { canonical: "/team" },
 };
 
+function MemberCard({
+  name,
+  role,
+  photo,
+  status,
+}: {
+  name: string | null;
+  role: string | null;
+  photo?: string | null;
+  status: string;
+}) {
+  const isPending = status === "pending" || !name || name.includes("Deputy Head — [ ]") || name === "Deputy Head";
+
+  return (
+    <div
+      className={`group flex flex-col justify-between transition-colors ${
+        isPending ? "opacity-60 grayscale" : ""
+      }`}
+    >
+      {/* Level 3 Photo Container (Compact size in strict decreasing order) */}
+      <div className="relative w-full overflow-hidden rounded-sm border border-line/60 bg-base">
+        {photo && !photo.startsWith("[SPARK-") ? (
+          <SparkImage
+            src={photo}
+            alt={name ?? role ?? "Member"}
+            aspectRatio="16 / 10"
+            className="size-full object-cover transition-transform duration-300 group-hover:scale-105"
+          />
+        ) : (
+          <div
+            className="flex w-full flex-col items-center justify-center p-3 bg-gradient-to-b from-surface to-base-deep text-center"
+            style={{ aspectRatio: "16 / 10" }}
+          >
+            <div className="flex size-7 items-center justify-center rounded-full border border-line bg-base text-accent mb-1">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={1.5}
+                className="size-3.5"
+                aria-hidden="true"
+              >
+                <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
+                <circle cx="9" cy="9" r="2" />
+                <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
+              </svg>
+            </div>
+            <span className="font-mono text-[8px] uppercase tracking-widest text-ink-muted">
+              {isPending ? "DEPUTY HEAD — [ ]" : "INSERT IMAGE HERE"}
+            </span>
+          </div>
+        )}
+      </div>
+
+      <div className="mt-2.5 flex flex-col">
+        <span className="font-display text-sm font-semibold text-ink group-hover:text-accent transition-colors">
+          {isPending ? "Deputy Head — [ ]" : name}
+        </span>
+        <span className="font-mono text-xs text-accent mt-0.5">
+          {role ?? "Core Member"}
+        </span>
+      </div>
+    </div>
+  );
+}
+
 export default function TeamPage() {
   return (
     <main className="flex flex-col">
-      {/* ── 01. HERO SECTION ── */}
-      <section className="relative overflow-hidden border-b border-line pt-28 pb-16 sm:pt-36 sm:pb-24 lg:pt-40 lg:pb-28">
-        <div
-          className="pointer-events-none absolute inset-0 z-0 bg-[radial-gradient(circle_at_top_right,_rgba(240,177,63,0.06)_0%,_transparent_60%)]"
-          aria-hidden="true"
-        />
+      {/* ── 01. EDITORIAL HERO (Compact vertical rhythm) ── */}
+      <section className="relative border-b border-line pt-20 pb-8 sm:pt-24 sm:pb-10">
+        <Container>
+          <div className="flex flex-col gap-6">
+            <ScrollReveal>
+              <div className="flex flex-col gap-2 max-w-4xl">
+                <SectionEyebrow hairline>SOCIETY ROSTER</SectionEyebrow>
 
-        <Container className="relative z-10">
-          <div className="grid gap-12 lg:grid-cols-12 lg:items-center">
-            {/* Left Content */}
-            <div className="flex flex-col gap-6 lg:col-span-7">
-              <ScrollReveal>
-                <SectionEyebrow prefix="" className="text-accent tracking-[0.25em]">
-                  TEAM /////
-                </SectionEyebrow>
-              </ScrollReveal>
-
-              <ScrollReveal delay={0.1}>
-                <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-ink leading-[1.02]">
-                  Meet Our <span className="text-accent">Team</span>
+                <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-ink leading-tight">
+                  MEET OUR TEAM
                 </h1>
-              </ScrollReveal>
+              </div>
+            </ScrollReveal>
 
-              <ScrollReveal delay={0.15}>
-                <p className="max-w-xl text-base sm:text-lg leading-relaxed text-ink-secondary">
-                  A group of curious minds, driven by passion and purpose, working together to create impact through research, innovation and collaboration.
+            <ScrollReveal delay={0.08}>
+              <div className="grid gap-8 lg:grid-cols-12 items-center pt-6 border-t border-line">
+                <p className="lg:col-span-6 text-base sm:text-lg leading-relaxed text-ink-secondary">
+                  A collective of curious minds driven by purpose and innovation, collaborating across disciplines to build impactful engineering solutions and cultivate research excellence at MSIT.
                 </p>
-              </ScrollReveal>
 
-              {/* 4 Stat Blocks */}
-              <ScrollReveal delay={0.2}>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5 pt-2">
-                  <StatBlock
-                    value="1"
-                    label="Faculty Guide"
-                    className="p-3.5 sm:p-4"
-                  />
-                  <StatBlock
-                    value="3"
-                    label="Core Leaders"
-                    className="p-3.5 sm:p-4"
-                  />
-                  <StatBlock
-                    value="7"
-                    label="Departments"
-                    className="p-3.5 sm:p-4"
-                  />
-                  <StatBlock
-                    value="26–27"
-                    label="Active Term"
-                    className="p-3.5 sm:p-4"
-                  />
-                </div>
-              </ScrollReveal>
-            </div>
-
-            {/* Right Team Silhouette Visual */}
-            <div className="lg:col-span-5">
-              <ScrollReveal delay={0.25}>
-                <div className="relative rounded-panel border border-line bg-surface p-4 sm:p-5 shadow-card overflow-hidden">
-                  <div className="relative overflow-hidden rounded-sm bg-base border border-line">
-                    <SparkImage
-                      src="[SPARK-TEAM-HERO-VISUAL]"
-                      alt="SPARK MSIT Team Roster"
-                      aspectRatio="4 / 3"
-                      className="transition-transform duration-700 ease-out hover:scale-105"
-                    />
-
-                    {/* Glowing Aura Overlay in Center */}
-                    <div
-                      className="pointer-events-none absolute inset-0 flex items-center justify-center"
-                      aria-hidden="true"
-                    >
-                      <div className="relative flex size-20 items-center justify-center rounded-full border border-accent/40 bg-base-deep/50 backdrop-blur-xs">
-                        <span className="text-accent font-bold text-xl drop-shadow-[0_0_12px_rgba(240,177,63,0.9)]">⚡</span>
-                        {/* Concentric subtle aura ring */}
-                        <div className="absolute inset-0 -m-4 rounded-full border border-accent/20 animate-pulse" />
-                      </div>
-                    </div>
+                <div className="lg:col-span-6 grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-6 pt-4 lg:pt-0 border-t border-line lg:border-t-0">
+                  <div className="flex flex-col gap-1.5 border-l-2 border-accent pl-4">
+                    <span className="font-display text-3xl font-bold text-ink">1</span>
+                    <span className="font-mono text-[10px] uppercase tracking-widest text-ink-muted">Faculty Guide</span>
+                  </div>
+                  <div className="flex flex-col gap-1.5 border-l border-line pl-4">
+                    <span className="font-display text-3xl font-bold text-ink">3</span>
+                    <span className="font-mono text-[10px] uppercase tracking-widest text-ink-muted">Executive Panel</span>
+                  </div>
+                  <div className="flex flex-col gap-1.5 border-l border-line pl-4">
+                    <span className="font-display text-3xl font-bold text-ink">7</span>
+                    <span className="font-mono text-[10px] uppercase tracking-widest text-ink-muted">Departments</span>
+                  </div>
+                  <div className="flex flex-col gap-1.5 border-l border-line pl-4">
+                    <span className="font-display text-3xl font-bold text-ink">26–27</span>
+                    <span className="font-mono text-[10px] uppercase tracking-widest text-ink-muted">Active Term</span>
                   </div>
                 </div>
-              </ScrollReveal>
-            </div>
-          </div>
-        </Container>
-      </section>
-
-      {/* ── 02. FACULTY & EXECUTIVE PANEL ── */}
-      <section className="py-[var(--spark-section-pad)] border-b border-line bg-base-deep/40">
-        <Container>
-          <div className="grid gap-10 lg:grid-cols-12 lg:items-start">
-            {/* Left: Faculty Guide (4 Cols) */}
-            <div className="lg:col-span-4 flex flex-col gap-6">
-              <ScrollReveal>
-                <div className="flex items-center gap-2">
-                  <span className="text-accent text-sm" aria-hidden="true">🎓</span>
-                  <SectionEyebrow prefix="">FACULTY GUIDE</SectionEyebrow>
-                </div>
-              </ScrollReveal>
-
-              <ScrollReveal delay={0.1}>
-                <PortraitCard
-                  name={faculty.name}
-                  role={faculty.role}
-                  description="Guiding SPARK with experience, insight and constant support."
-                  photo={faculty.photo}
-                  aspectRatio="1 / 1"
-                  className="bg-surface/80"
-                />
-              </ScrollReveal>
-            </div>
-
-            {/* Right: Executive Panel 2026–2027 (8 Cols) */}
-            <div className="lg:col-span-8 flex flex-col gap-6">
-              <ScrollReveal>
-                <div className="flex items-center gap-2">
-                  <span className="text-accent text-sm" aria-hidden="true">👑</span>
-                  <SectionEyebrow prefix="">EXECUTIVE PANEL 2026–2027</SectionEyebrow>
-                </div>
-              </ScrollReveal>
-
-              <div className="grid gap-5 sm:grid-cols-3">
-                {executivePanel.map((member, i) => (
-                  <ScrollReveal key={member.id} delay={0.1 + i * 0.08}>
-                    <PortraitCard
-                      name={member.name}
-                      role={member.role}
-                      description={member.description}
-                      photo={member.photo}
-                      aspectRatio="3 / 4"
-                      className="h-full bg-surface/80"
-                    />
-                  </ScrollReveal>
-                ))}
-              </div>
-            </div>
-          </div>
-        </Container>
-      </section>
-
-      {/* ── 03. OUR DEPARTMENTS ── */}
-      <section className="py-[var(--spark-section-pad)] border-b border-line">
-        <Container>
-          <ScrollReveal>
-            <div className="mb-12 sm:mb-16">
-              <SectionEyebrow prefix="" hairline className="text-accent tracking-[0.2em]">
-                OUR DEPARTMENTS
-              </SectionEyebrow>
-            </div>
-          </ScrollReveal>
-
-          {/* Department Grid */}
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {departments.map((dept, index) => {
-              const isLastDept = index === departments.length - 1;
-
-              return (
-                <ScrollReveal
-                  key={dept.id}
-                  delay={index * 0.06}
-                  className={isLastDept ? "lg:col-span-2" : ""}
-                >
-                  <article className="group flex h-full flex-col justify-between rounded-panel border border-line bg-surface/60 p-5 sm:p-6 shadow-card transition-all duration-300 hover:border-accent/40 hover:shadow-glow">
-                    <div className="flex flex-col gap-5">
-                      {/* Department Header */}
-                      <div className="flex items-center justify-between gap-3 border-b border-line pb-4">
-                        <div className="flex items-center gap-3">
-                          <div className="flex size-9 items-center justify-center rounded-sm border border-line bg-base text-accent">
-                            <DeptIcon dept={dept.id} className="size-5" />
-                          </div>
-                          <h2 className="font-display text-base sm:text-lg font-semibold tracking-tight text-ink group-hover:text-accent transition-colors duration-200">
-                            {dept.name}
-                          </h2>
-                        </div>
-                      </div>
-
-                      {/* Members Roster in Department */}
-                      <div className={`grid gap-3 ${dept.members.length > 2 ? "grid-cols-1 sm:grid-cols-3" : "grid-cols-1 sm:grid-cols-2"}`}>
-                        {dept.members.map((member, mIdx) => (
-                          <div
-                            key={mIdx}
-                            className={`flex flex-col items-center rounded-sm border border-line/60 bg-base/60 p-3 text-center transition-colors duration-200 ${
-                              member.status === "pending" ? "border-dashed opacity-75" : "hover:border-line-strong"
-                            }`}
-                          >
-                            <div className="relative mb-2.5 size-14 sm:size-16 overflow-hidden rounded-full border border-line bg-surface">
-                              {member.status === "active" && member.photo ? (
-                                <SparkImage
-                                  src={member.photo}
-                                  alt={member.name!}
-                                  aspectRatio="1 / 1"
-                                />
-                              ) : (
-                                <div className="flex size-full items-center justify-center text-ink-muted">
-                                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="size-6" aria-hidden="true">
-                                    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-                                    <circle cx="12" cy="7" r="4" />
-                                  </svg>
-                                </div>
-                              )}
-                            </div>
-                            <span className="font-display text-xs sm:text-sm font-semibold text-ink leading-tight line-clamp-1">
-                              {member.status === "active" ? member.name : "Position Open"}
-                            </span>
-                            <span className="font-mono text-[10px] uppercase tracking-wider text-accent mt-0.5 leading-tight">
-                              {member.role}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-
-                      {/* Department Description */}
-                      <p className="text-xs sm:text-sm leading-relaxed text-ink-secondary pt-1">
-                        {dept.description}
-                      </p>
-                    </div>
-                  </article>
-                </ScrollReveal>
-              );
-            })}
-
-            {/* Closing Quote Block (Pairs alongside Design & Videography in Row 3) */}
-            <ScrollReveal delay={0.45} className="lg:col-span-1">
-              <div className="flex h-full flex-col items-center justify-center text-center rounded-panel border border-line bg-surface/80 p-6 sm:p-8 shadow-card relative overflow-hidden">
-                {/* Ambient Radial Glow */}
-                <div
-                  className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(240,177,63,0.08)_0%,_transparent_70%)]"
-                  aria-hidden="true"
-                />
-                <span className="font-display text-4xl text-accent font-bold mb-2 select-none" aria-hidden="true">“</span>
-                <p className="font-display text-xl sm:text-2xl font-semibold text-ink leading-snug">
-                  Different departments.<br />
-                  Different skills.<br />
-                  <span className="text-accent">One SPARK. ⚡</span>
-                </p>
               </div>
             </ScrollReveal>
           </div>
         </Container>
       </section>
 
-      {/* ── 04. BOTTOM CTA STRIP ── */}
-      <section className="py-[var(--spark-section-pad)]">
+      {/* ── 02. LEVEL 1: FACULTY TEAM (FULL-WIDTH SPAN) ── */}
+      <section className="py-8 sm:py-12 border-b border-line bg-base-deep/40">
         <Container>
-          <ScrollReveal>
-            <div className="flex flex-col md:flex-row items-center justify-between gap-6 rounded-panel border border-line bg-surface p-6 sm:p-8 md:p-10 shadow-card">
-              <div className="flex items-center gap-4">
-                <div
-                  className="flex size-14 shrink-0 items-center justify-center rounded-full border border-accent/40 bg-accent/10 text-accent shadow-glow"
-                  aria-hidden="true"
-                >
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="size-7">
-                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-                    <circle cx="9" cy="7" r="4" />
-                    <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
-                  </svg>
+          <div className="w-full">
+            <ScrollReveal>
+              <div className="mb-6">
+                <SectionEyebrow hairline>GUIDANCE</SectionEyebrow>
+              </div>
+            </ScrollReveal>
+
+            <ScrollReveal delay={0.08}>
+              <div className="py-6 flex flex-col md:flex-row gap-6 sm:gap-10 items-start md:items-center">
+                {/* Level 1 Largest Image Container (Teacher / Faculty Advisor) */}
+                <div className="relative w-full max-w-[280px] sm:max-w-[340px] md:max-w-[400px] shrink-0 overflow-hidden rounded-sm border border-line bg-base">
+                  {faculty.photo && !faculty.photo.startsWith("[SPARK-") ? (
+                    <SparkImage
+                      src={faculty.photo}
+                      alt={faculty.name}
+                      aspectRatio="4 / 3"
+                      className="size-full object-cover"
+                    />
+                  ) : (
+                    <div
+                      className="flex w-full flex-col items-center justify-center p-8 bg-gradient-to-b from-surface to-base-deep text-center"
+                      style={{ aspectRatio: "4 / 3" }}
+                    >
+                      <div className="flex size-16 items-center justify-center rounded-full border border-accent/40 bg-accent/10 font-display text-2xl font-bold text-accent mb-2">
+                        DY
+                      </div>
+                      <span className="font-mono text-xs uppercase tracking-widest text-ink-muted">
+                        INSERT IMAGE HERE
+                      </span>
+                    </div>
+                  )}
                 </div>
 
-                <div>
-                  <h3 className="font-display text-lg sm:text-xl font-semibold text-ink">
-                    Want to be a part of this journey?
-                  </h3>
-                  <p className="text-xs sm:text-sm text-ink-secondary mt-1">
-                    Explore opportunities. Learn. Collaborate. Create Impact.
-                  </p>
+                <div className="flex flex-col gap-3">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-1">
+                    <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl font-semibold text-ink">
+                      {faculty.name}
+                    </h2>
+                    <span className="font-mono text-xs uppercase tracking-wider text-accent px-2.5 py-1 rounded-sm border border-accent/30 bg-accent/10 w-fit">
+                      Faculty Advisor
+                    </span>
+                  </div>
+                  <div className="flex flex-col gap-4 text-base sm:text-lg text-ink-secondary leading-relaxed max-w-3xl">
+                    <p>
+                      Providing strategic mentorship, academic guidance, and institutional support to empower SPARK initiatives and research projects across Maharaja Surajmal Institute of Technology.
+                    </p>
+                    <p>
+                      As a cornerstone of our technical community, she bridges the gap between the academic curriculum and practical innovation, ensuring our student teams have the resources, ethical grounding, and direction needed to excel in interdisciplinary engineering domains.
+                    </p>
+                  </div>
                 </div>
               </div>
+            </ScrollReveal>
+          </div>
+        </Container>
+      </section>
 
-              <Button href="/contact" variant="outline-accent" size="lg" className="shrink-0 w-full md:w-auto">
+      {/* ── 03. LEVEL 2: EXECUTIVE PANEL (MEDIUM UNIFORM PHOTOS) ── */}
+      <section className="py-8 sm:py-12 border-b border-line">
+        <Container>
+          <ScrollReveal>
+            <div className="mb-6 pb-4 border-b border-line flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+              <div>
+                <SectionEyebrow hairline className="mb-1">LEADERSHIP</SectionEyebrow>
+                <h2 className="font-display text-2xl sm:text-3xl font-semibold tracking-tight text-ink">
+                  Executive Panel 2026–2027
+                </h2>
+              </div>
+              <span className="font-mono text-xs uppercase tracking-widest text-accent font-semibold">
+                ELECTED TERM
+              </span>
+            </div>
+          </ScrollReveal>
+
+          {/* Level 2: 3 Columns with Equal Dimensions */}
+          <div className="grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+            {executivePanel.map((exec, index) => (
+              <ScrollReveal key={exec.name} delay={0.06 * index} className="h-full">
+                <PortraitCard
+                  name={exec.name}
+                  role={exec.role}
+                  description={exec.description}
+                  photo={exec.photo}
+                  aspectRatio="4 / 3"
+                  className="h-full"
+                />
+              </ScrollReveal>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      {/* ── 04. LEVEL 3: OUR DEPARTMENTS (SMALLER UNIFORM CARDS) ── */}
+      <section id="departments" className="py-8 sm:py-12 border-b border-line bg-base-deep/30">
+        <Container>
+          <ScrollReveal>
+            <div className="mb-8 pb-4 border-b border-line flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+              <div>
+                <SectionEyebrow hairline className="mb-1">SOCIETY DIVISIONS</SectionEyebrow>
+                <h2 className="font-display text-2xl sm:text-3xl font-semibold tracking-tight text-ink">
+                  Our Departments
+                </h2>
+              </div>
+              <p className="max-w-md text-xs sm:text-sm text-ink-secondary">
+                Coordinated student teams driving research, technical development, workshops, and community outreach.
+              </p>
+            </div>
+          </ScrollReveal>
+
+          <div className="flex flex-col gap-10">
+            {departments.map((dept, index) => (
+              <ScrollReveal key={dept.id} delay={0.05 * index}>
+                <div className="py-2 border-b border-line pb-10">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 pb-3 border-b border-line/60">
+                    <div>
+                      <h3 className="font-display text-xl font-semibold text-ink">
+                        {dept.name}
+                      </h3>
+                      <p className="text-xs sm:text-sm text-ink-secondary mt-1 max-w-2xl leading-relaxed">
+                        {dept.description}
+                      </p>
+                    </div>
+                    <span className="font-mono text-xs uppercase tracking-widest text-accent font-semibold shrink-0">
+                      DEPT {String(index + 1).padStart(2, "0")}
+                    </span>
+                  </div>
+
+                  {/* Level 3: Department Members Grid */}
+                  <div className="grid gap-x-6 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
+                    {dept.members.map((member, mIdx) => (
+                      <MemberCard
+                        key={mIdx}
+                        name={member.name}
+                        role={member.role}
+                        photo={member.photo}
+                        status={member.status ?? "active"}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </ScrollReveal>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      {/* ── 05. CLOSING CTA ── */}
+      <section className="py-8 sm:py-12">
+        <Container>
+          <ScrollReveal>
+            <div className="flex flex-col md:flex-row items-center justify-between gap-6 py-8 border-t border-line">
+              <div className="flex flex-col gap-2 max-w-xl">
+                <h3 className="font-display text-2xl sm:text-3xl font-semibold text-ink">
+                  Different departments. Different skills. One <span className="text-accent">SPARK.</span>
+                </h3>
+                <p className="text-sm text-ink-secondary">
+                  Join our open technical discussions, collaborative research sessions, and society recruitment.
+                </p>
+              </div>
+
+              <Button href="/contact" variant="primary" size="lg" className="shrink-0 w-full md:w-auto">
                 Join SPARK →
               </Button>
             </div>

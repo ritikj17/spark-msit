@@ -39,7 +39,7 @@ export const departments: Department[] = [
       "The Tech team handles the technical side of SPARK. From digital platforms and technical requirements to providing support for different activities, the team helps keep the technical side of the society running smoothly.",
     members: [
       { name: "Mudit", role: "Executive Head", status: "active", photo: "[SPARK-TECH-HEAD-PHOTO]" },
-      { name: "Ritik", role: "Deputy Head", status: "active", photo: "[SPARK-TECH-DEPUTY-HEAD-PHOTO]" },
+      { name: "Ritik Jha", role: "Deputy Head", status: "active", photo: "[SPARK-TECH-DEPUTY-HEAD-PHOTO]" },
     ],
   },
   {
