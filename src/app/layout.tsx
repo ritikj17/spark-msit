@@ -24,7 +24,7 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
-const brandTitle = `${site.name} ⚡`;
+const brandTitle = `${site.name}`;
 
 export const metadata: Metadata = {
   title: {
@@ -63,12 +63,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}
+      className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} h-full antialiased dark`}
     >
       <body className="flex min-h-full flex-col overflow-x-hidden bg-base font-sans text-ink">
         <SkipLink />
         <Navbar />
-        <main id="main" className="flex-1">
+        <main id="main" className="flex-1 pt-16 sm:pt-20">
           {children}
         </main>
         <Footer />
