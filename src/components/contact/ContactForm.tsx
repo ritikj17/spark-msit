@@ -52,6 +52,7 @@ export function ContactForm() {
             id="name"
             name="name"
             placeholder="Your Name"
+            maxLength={100}
             required
             className="bg-base border-line focus:border-accent"
           />
@@ -65,6 +66,7 @@ export function ContactForm() {
             name="email"
             type="email"
             placeholder="Your Email"
+            maxLength={120}
             required
             className="bg-base border-line focus:border-accent"
           />
@@ -79,6 +81,7 @@ export function ContactForm() {
           id="subject"
           name="subject"
           placeholder="Subject"
+          maxLength={150}
           required
           className="bg-base border-line focus:border-accent"
         />
@@ -92,6 +95,7 @@ export function ContactForm() {
           id="message"
           name="message"
           placeholder="Your Message"
+          maxLength={2000}
           rows={4}
           required
           className="bg-base border-line focus:border-accent resize-none"

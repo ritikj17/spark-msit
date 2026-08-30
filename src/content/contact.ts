@@ -44,6 +44,6 @@ export const contactLocation = {
 };
 
 export const contactClosing: ContactClosing = {
-  idea: "Have an idea? We'd love to hear it. ⚡",
+  idea: "Have an idea? We'd love to hear it.",
   mantra: "SPARK — Research. Collaborate. Discover."
 };

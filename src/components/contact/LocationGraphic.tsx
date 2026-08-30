@@ -17,7 +17,7 @@ export function LocationGraphic({
   className,
 }: LocationGraphicProps) {
   return (
-    <div className={cn("relative overflow-hidden rounded-panel border border-line bg-surface p-4 sm:p-5 shadow-card", className)}>
+    <div className={cn("relative overflow-hidden py-4 border-y border-line sm:border-y-0 sm:py-0", className)}>
       <div className="relative h-[220px] sm:h-[260px] w-full overflow-hidden rounded-sm bg-base border border-line flex items-center justify-center">
         {/* Ambient background map grid SVG */}
         <svg
@@ -73,10 +73,13 @@ export function LocationGraphic({
         </svg>
 
         {/* Pinpoint Location Marker & Callout Box */}
-        <div className="relative z-10 flex flex-col sm:flex-row items-center gap-3 sm:gap-4 p-3 bg-base-deep/90 border border-accent/60 rounded-panel shadow-glow backdrop-blur-md max-w-sm sm:max-w-md">
+        <div className="relative z-10 flex flex-col sm:flex-row items-center gap-3 sm:gap-4 p-3 bg-base-deep/90 border border-accent/60 rounded-sm shadow-glow backdrop-blur-md max-w-sm sm:max-w-md">
           {/* Gold Pin Badge */}
           <div className="flex size-11 sm:size-12 shrink-0 items-center justify-center rounded-full border border-accent bg-accent/20 text-accent shadow-glow">
-            <span className="text-accent font-bold text-lg drop-shadow-[0_0_8px_rgba(240,177,63,0.8)]">⚡</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="size-5 text-accent" aria-hidden="true">
+              <path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 0 0-8-8z" />
+              <circle cx="12" cy="10" r="3" />
+            </svg>
           </div>
 
           <div className="flex flex-col text-center sm:text-left">
