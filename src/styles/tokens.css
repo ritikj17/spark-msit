@@ -1,10 +1,7 @@
 /*
  * SPARK design tokens
- * Source of truth for the locked visual direction: dark-first, gold accent,
- * premium technical / research-lab aesthetic.
- *
- * Tokens are declared as plain CSS custom properties (used in raw CSS and JS)
- * and mapped into Tailwind v4 utilities through `@theme inline`.
+ * Source of truth for SPARK visual direction: dark-first, gold accent,
+ * clean typography, compact vertical spacing.
  */
 
 :root {
@@ -16,12 +13,12 @@
 
   /* ---- Color · borders ---- */
   --spark-line: rgba(255, 255, 255, 0.08);
-  --spark-line-strong: rgba(255, 255, 255, 0.14);
+  --spark-line-strong: rgba(255, 255, 255, 0.16);
 
   /* ---- Color · text ---- */
-  --spark-ink: #edeff2;
-  --spark-ink-secondary: #9aa0a8;
-  --spark-ink-muted: #6b7076;
+  --spark-ink: #f1f3f7;
+  --spark-ink-secondary: #9ea5b0;
+  --spark-ink-muted: #6b7280;
 
   /* ---- Color · accent (SPARK gold) ---- */
   --spark-accent: #f0b13f;
@@ -44,8 +41,8 @@
 
   /* ---- Shadow / glow ---- */
   --spark-shadow-card: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 8px 24px rgba(0, 0, 0, 0.4);
-  --spark-glow-accent: 0 0 24px rgba(240, 177, 63, 0.18);
-  --spark-glow-accent-strong: 0 0 32px rgba(240, 177, 63, 0.32);
+  --spark-glow-accent: 0 0 24px rgba(240, 177, 63, 0.22);
+  --spark-glow-accent-strong: 0 0 32px rgba(240, 177, 63, 0.36);
 
   /* ---- Motion ---- */
   --spark-duration-fast: 150ms;
@@ -62,10 +59,10 @@
   --spark-z-modal: 70;
   --spark-z-toast: 80;
 
-  /* ---- Layout ---- */
+  /* ---- Layout (Compact vertical rhythm) ---- */
   --spark-container-max: 80rem;
   --spark-content-rail: 72ch;
-  --spark-section-pad: clamp(4rem, 10vw, 8rem);
+  --spark-section-pad: clamp(2.5rem, 5vw, 4rem);
 }
 
 @theme inline {

@@ -22,7 +22,7 @@ export function StatBlock({
   return (
     <div
       className={cn(
-        "flex flex-col justify-between rounded-panel border border-line bg-surface/60 p-5 shadow-card backdrop-blur-xs transition-colors duration-200 hover:border-line-strong",
+        "flex flex-col justify-between py-4 border-t border-line transition-colors duration-200 hover:border-line-strong",
         className,
       )}
     >

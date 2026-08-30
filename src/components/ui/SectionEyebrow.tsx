@@ -10,11 +10,11 @@ interface SectionEyebrowProps {
 }
 
 /**
- * Reusable mono uppercase section label matching the SPARK technical design language.
+ * Clean editorial uppercase section label.
  */
 export function SectionEyebrow({
   children,
-  prefix = "///",
+  prefix = "",
   hairline = false,
   className,
   as: Component = "p",
@@ -22,7 +22,7 @@ export function SectionEyebrow({
   return (
     <Component
       className={cn(
-        "inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-accent",
+        "inline-flex items-center gap-2.5 font-mono text-xs uppercase tracking-[0.2em] text-accent",
         className,
       )}
     >
@@ -33,7 +33,7 @@ export function SectionEyebrow({
       ) : null}
       <span>{children}</span>
       {hairline ? (
-        <span className="h-px w-12 bg-accent/30 sm:w-16" aria-hidden="true" />
+        <span className="h-px w-10 bg-accent/30 sm:w-16" aria-hidden="true" />
       ) : null}
     </Component>
   );

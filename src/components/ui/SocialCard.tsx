@@ -32,7 +32,7 @@ export function SocialCard({
       target="_blank"
       rel="noopener noreferrer"
       className={cn(
-        "group flex flex-col justify-between rounded-panel border border-line bg-surface p-6 shadow-card transition-all duration-200 hover:border-accent/40 hover:shadow-glow",
+        "group flex flex-col justify-between py-5 border-b border-line transition-colors hover:border-accent/40",
         className,
       )}
     >
