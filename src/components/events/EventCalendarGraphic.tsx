@@ -117,7 +117,7 @@ export function EventCalendarGraphic({ className }: EventCalendarGraphicProps) {
           </g>
         ))}
 
-        {/* Glowing SPARK ⚡ Lightning Bolt on Calendar Face */}
+        {/* Glowing SPARK Energy Symbol on Calendar Face */}
         <path
           d="M204 125 L190 155 L203 155 L195 185 L215 150 L202 150 Z"
           fill="#f0b13f"
