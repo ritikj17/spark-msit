@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import type { ReactNode } from "react";
 import { Inter, JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import { site } from "@/content/site";
 import { Footer } from "@/components/layout/Footer";
@@ -59,7 +60,7 @@ export const viewport: Viewport = {
   themeColor: "#0a0b0d",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html
       lang="en"
